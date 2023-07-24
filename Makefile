@@ -14,7 +14,7 @@ FLAGS    := -Wall -Wextra -Werror
 #                                 PROGRAM'S SRCS                               #
 ################################################################################
 
-SRCS        :=      push_swap.c functions.c
+SRCS        :=      push_swap.c functions.c ft_split.c
                           
 OBJS        := $(SRCS:.c=.o)
 
@@ -55,6 +55,11 @@ re:			fclean all
 
 e:	fclean
 
-.PHONY:		all clean fclean re e
+m:	${NAME}
+	@ ./${NAME} ${m}
 
+v:	${NAME}
+	@ valgrind -s --leak-check=full ./push_swap ${v}
+
+.PHONY:		all clean fclean re e m v
 

@@ -6,7 +6,7 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 15:19:43 by analexan          #+#    #+#             */
-/*   Updated: 2023/07/21 12:41:15 by analexan         ###   ########.fr       */
+/*   Updated: 2023/07/24 15:34:52 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,6 @@ int		stoi(char *str);
 void	pn(int n);
 void	ps(char *str);
 void	push_swap(int *arr);
+char	**ft_split_m(char const *s, char c, int *wc);
 
 #endif

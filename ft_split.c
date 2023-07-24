@@ -6,7 +6,7 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 10:30:11 by analexan          #+#    #+#             */
-/*   Updated: 2023/07/21 16:28:54 by analexan         ###   ########.fr       */
+/*   Updated: 2023/07/24 18:39:32 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,14 @@ static int	wordcount(char const *s, char c)
 	i = -1;
 	wc = 0;
 	while (s[++i])
+	{
 		if (s[i] != c && (i == 0 || s[i - 1] == c))
 			wc++;
+		if (s[i] == '-')
+			i++;
+		if (s[i] < '0' || s[i] > '9')
+			return (-1);
+	}
 	return (wc);
 }
 
@@ -66,26 +72,37 @@ static char	**writestring(char const *s, char **strs, char c, int wc)
 	return (strs);
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_split_m(char const *s, char c, int *wc)
 {
 	char	**strs;
-	int		wc;
+	int		i;
 
-	wc = wordcount(s, c);
-	strs = malloc((wc + 1) * sizeof(char *));
-	if (!strs || !s)
+	i = -1;
+	*wc = wordcount(s, c);
+	strs = malloc((*wc + 1) * sizeof(char *));
+	if (!strs || !s || *wc < 1)
+	{
+		free(strs);
+		strs = NULL;
 		return (NULL);
-	strs = writestring(s, strs, c, wc);
+	}
+	strs = writestring(s, strs, c, *wc);
+	while (++i < *wc)
+		if (!strs[i])
+			return (NULL);
 	return (strs);
 }
 
 /*
-*/
 #include <stdio.h>
 int	main(void)
+// int	main(int ac, char **av)
 {
+	// (void)ac;
+	// char *str = av[1];
 	char	str[] = "1 1";
-	char	**arr_of_arr = ft_split(str, ' ');
+	int sussus = 0;
+	char	**arr_of_arr = ft_split_m(str, ' ', &sussus);
 	int	i = -1;
 
 	while (arr_of_arr[++i])
@@ -96,3 +113,4 @@ int	main(void)
 	free(arr_of_arr);
 	return (0);
 }
+*/
