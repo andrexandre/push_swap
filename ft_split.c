@@ -6,7 +6,7 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 10:30:11 by analexan          #+#    #+#             */
-/*   Updated: 2023/07/25 14:40:50 by analexan         ###   ########.fr       */
+/*   Updated: 2023/07/25 16:20:24 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,9 @@ static char	**writestring(char const *s, char **strs, char c, int wc)
 	int	j;
 
 	i = 0;
+	strs[i] = ft_strlcpy_m("\0", 0);
+	if (!strs[i])
+		return (NULL);
 	while (i < wc)
 	{
 		j = 0;
@@ -60,13 +63,13 @@ static char	**writestring(char const *s, char **strs, char c, int wc)
 			s++;
 		while (s[j] && s[j] != c)
 			j++;
-		strs[i] = ft_strlcpy_m(s, j);
-		if (!strs[i])
+		strs[i + 1] = ft_strlcpy_m(s, j);
+		if (!strs[i + 1])
 			return (NULL);
 		s += j;
 		i++;
 	}
-	strs[i] = NULL;
+	strs[i + 1] = NULL;
 	return (strs);
 }
 
@@ -77,7 +80,7 @@ char	**ft_split_m(char const *s, char c, int *wc)
 
 	i = -1;
 	*wc = wordcount(s, c);
-	strs = malloc((*wc + 1) * sizeof(char *));
+	strs = malloc((*wc + 2) * sizeof(char *));
 	if (!strs || !s || *wc < 1)
 	{
 		free(strs);
@@ -88,6 +91,7 @@ char	**ft_split_m(char const *s, char c, int *wc)
 	while (++i < *wc)
 		if (!strs[i])
 			return (NULL);
+	(*wc)++;
 	return (strs);
 }
 
