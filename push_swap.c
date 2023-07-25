@@ -6,18 +6,22 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 15:19:34 by analexan          #+#    #+#             */
-/*   Updated: 2023/07/24 18:46:24 by analexan         ###   ########.fr       */
+/*   Updated: 2023/07/25 15:35:24 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
+	// if (ac == 1)
+	// 	ac++;
+	// pn(ac);
 	// ps("intarr = { ");
-	// while (*iarr)
+	// while (ac)
 	// {
 	// 	pn(*iarr++);
-	// 	if (*iarr)
+	// 	if (ac != 2)
 	// 		ps(", ");
+	// 	ac--;
 	// }
 	// ps(" }");
 	// write(1, "\n", 1);
@@ -34,8 +38,6 @@ int	check_size_dup(int ac, char **av, int mode)
 	int		bol;
 
 	bol = -1 * mode;
-	if (!av[!mode][0])
-		return (-1);
 	longarr = malloc(sizeof(long) * (ac - !mode));
 	if (!longarr)
 		return (-1);
@@ -86,12 +88,10 @@ int	*check_error(int ac, char **av, int mode)
 	return (intarr);
 }
 /*
+// check_error has TOO_MANY_LINES (needs 2 lines deleted)
 #include "functions.c"
 #include "ft_split.c"
-// make 0 work, idk if this is needed
-	// ac = 2;
-	// av[1] = "0\0";
-
+*/
 	// ac = 2;
 	// av[1] = "-2147483649";
 
@@ -99,22 +99,19 @@ int	*check_error(int ac, char **av, int mode)
 	// t_lst	*b;
 	// a = NULL;
 	// b = NULL;
-*/
 
 int	main(int ac, char **av)
 {
 	int		*iarr;
-	char	*temp;
 	int		mode;
 
 	iarr = NULL;
-	if (ac == 1)
-		return (0);
 	mode = 0;
-	if (ac == 2)
+	if (ac == 1 || (ac == 2 && !av[1][0]))
+		return (0);
+	else if (ac == 2)
 	{
-		temp = av[1];
-		av = ft_split_m(temp, ' ', &ac);
+		av = ft_split_m(av[1], ' ', &ac);
 		mode = 1;
 	}
 	if (av)

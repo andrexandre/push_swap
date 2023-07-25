@@ -6,7 +6,7 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 10:30:11 by analexan          #+#    #+#             */
-/*   Updated: 2023/07/24 18:39:32 by analexan         ###   ########.fr       */
+/*   Updated: 2023/07/25 14:40:50 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ static int	wordcount(char const *s, char c)
 			wc++;
 		if (s[i] == '-')
 			i++;
-		if (s[i] < '0' || s[i] > '9')
-			return (-1);
 	}
 	return (wc);
 }
