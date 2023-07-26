@@ -6,7 +6,7 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 15:19:34 by analexan          #+#    #+#             */
-/*   Updated: 2023/07/25 16:40:20 by analexan         ###   ########.fr       */
+/*   Updated: 2023/07/26 19:02:18 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	check_size_dup(int ac, char **av)
 	int		i;
 	int		j;
 
+	longarr = NULL;
 	longarr = malloc(sizeof(long) * (ac - 1));
 	if (!longarr)
 		return (-1);
@@ -50,12 +51,16 @@ int	check_size_dup(int ac, char **av)
 	{
 		j = i;
 		while (longarr[j - 1])
-			if (longarr[i - 1] > 2147483647 
-				|| longarr[i - 1] < -2147483648
+		{
+			if (longarr[i -1] > 2147483647 || longarr[i -1] < -2147483648
 				|| longarr[i - 1] == longarr[++j - 1])
+			{
+				free(longarr);
+				longarr = NULL;
 				return (1);
+			}
+		}
 	}
-	free(longarr);
 	return (0);
 }
 
@@ -66,6 +71,7 @@ int	*check_error(int ac, char **av)
 	int		*intarr;
 
 	i = 0;
+	intarr = NULL;
 	while (++i < ac)
 	{
 		j = -1;
@@ -87,31 +93,50 @@ int	*check_error(int ac, char **av)
 		intarr[i - 1] = stoi(av[i]);
 	return (intarr);
 }
-/*
-#include "functions.c"
-#include "ft_split.c"
-*/
+// solve the memory leaks with
+// make v v="1 2"
 	// t_lst	*a;
 	// t_lst	*b;
 	// a = NULL;
 	// b = NULL;
-	// ac = 2;
-	// av[1] = "1";
+/*
+#include "functions.c"
+#include "ft_split.c"
+int	main(int ac, char **av)
+{
+	int		*iarr;
+	int		i;
+	ac = 2;
+	av[1] = " a ";
+*/
 
 int	main(int ac, char **av)
 {
 	int		*iarr;
+	int		i;
 
+
+
+
+	i = ac;
 	iarr = NULL;
 	if (ac == 1 || (ac == 2 && !av[1][0]))
 		return (0);
 	else if (ac == 2)
 		av = ft_split_m(av[1], ' ', &ac);
-	if (av[1])
+	if (av)
 		iarr = check_error(ac, av);
 	if (!iarr)
 		write(2, "Error\n", 6);
 	else
 		push_swap(iarr, ac);
+	if (i == 2)
+	{
+		i = ac;
+		while (i && av[--i])
+			free(av[i]);
+		if (av)
+			free(av);
+	}
 	return (0);
 }

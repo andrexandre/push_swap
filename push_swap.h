@@ -6,7 +6,7 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 15:19:43 by analexan          #+#    #+#             */
-/*   Updated: 2023/07/25 16:40:29 by analexan         ###   ########.fr       */
+/*   Updated: 2023/07/26 17:03:01 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define PUSH_SWAP_H
 # include <unistd.h>
 # include <stdlib.h>
-# include <limits.h>
 
 typedef struct s_lst
 {

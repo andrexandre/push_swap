@@ -9,7 +9,7 @@
 
 NAME        := push_swap
 CC        := cc
-FLAGS    := -Wall -Wextra -Werror 
+FLAGS    := -Wall -Wextra -Werror
 ################################################################################
 #                                 PROGRAM'S SRCS                               #
 ################################################################################
@@ -59,7 +59,7 @@ m:	${NAME}
 	@ ./${NAME} ${m}
 
 v:	${NAME}
-	@ valgrind -s --leak-check=full ./push_swap ${v}
+	@ valgrind -s --leak-check=full ./${NAME} ${v}
 
 .PHONY:		all clean fclean re e m v
 
