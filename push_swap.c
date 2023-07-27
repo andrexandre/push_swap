@@ -6,7 +6,7 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 15:19:34 by analexan          #+#    #+#             */
-/*   Updated: 2023/07/26 19:02:18 by analexan         ###   ########.fr       */
+/*   Updated: 2023/07/27 19:29:01 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,40 @@
 	ps(" }");
 	write(1, "\n", 1);
 */
+
 void	push_swap(int *iarr, int ac)
 {
 	(void)iarr;
 	(void)ac;
+}
+
+void	*createarr(int ac, char **av, int mode)
+{
+	long	*longarr;
+	int		*intarr;
+	int		i;
+
+	i = 0;
+	if (!mode)
+	{
+		longarr = NULL;
+		longarr = (long *)malloc(sizeof(long) * (ac - 1));
+		if (!longarr)
+			return (NULL);
+		while (++i < ac)
+			longarr[i - 1] = stol(av[i]);
+		return (longarr);
+	}
+	else
+	{
+		intarr = NULL;
+		intarr = (int *)malloc(sizeof(int) * (ac - 1));
+		if (!intarr)
+			return (NULL);
+		while (++i < ac)
+			intarr[i - 1] = stoi(av[i]);
+		return (intarr);
+	}
 }
 
 int	check_size_dup(int ac, char **av)
@@ -38,30 +68,27 @@ int	check_size_dup(int ac, char **av)
 	long	*longarr;
 	int		i;
 	int		j;
+	int		n;
 
-	longarr = NULL;
-	longarr = malloc(sizeof(long) * (ac - 1));
+	n = 0;
+	longarr = (long *)createarr(ac, av, 0);
 	if (!longarr)
-		return (-1);
+		n = -1;
 	i = 0;
-	while (++i < ac)
-		longarr[i - 1] = stol(av[i]);
-	i = 0;
-	while (++i < ac)
+	while (++i < ac && !n)
 	{
 		j = i;
-		while (longarr[j - 1])
+		while (j++ < ac && !n)
 		{
-			if (longarr[i -1] > 2147483647 || longarr[i -1] < -2147483648
-				|| longarr[i - 1] == longarr[++j - 1])
-			{
-				free(longarr);
-				longarr = NULL;
-				return (1);
-			}
+			if (longarr[i -1] > 2147483647 || longarr[i -1] < -2147483648)
+				n = 1;
+			if (j != ac && longarr[i - 1] == longarr[j - 1])
+				n = 1;
 		}
 	}
-	return (0);
+	free(longarr);
+	longarr = NULL;
+	return (n);
 }
 
 int	*check_error(int ac, char **av)
@@ -85,16 +112,12 @@ int	*check_error(int ac, char **av)
 	}
 	if (check_size_dup(ac, av))
 		return (NULL);
-	intarr = malloc(sizeof(int) * (ac - 1));
+	intarr = (int *)createarr(ac, av, 1);
 	if (!intarr)
 		return (NULL);
-	i = 0;
-	while (++i < ac)
-		intarr[i - 1] = stoi(av[i]);
 	return (intarr);
 }
-// solve the memory leaks with
-// make v v="1 2"
+// 3 algorithms: 5 -, 100 -, 500 -
 	// t_lst	*a;
 	// t_lst	*b;
 	// a = NULL;
@@ -107,14 +130,13 @@ int	main(int ac, char **av)
 	int		*iarr;
 	int		i;
 	ac = 2;
-	av[1] = " a ";
+	av[1] = "-2147483649";
 */
 
 int	main(int ac, char **av)
 {
 	int		*iarr;
 	int		i;
-
 
 
 
@@ -133,10 +155,10 @@ int	main(int ac, char **av)
 	if (i == 2)
 	{
 		i = ac;
-		while (i && av[--i])
+		while (--i >= 0)
 			free(av[i]);
-		if (av)
-			free(av);
+		free(av);
 	}
+	free(iarr);
 	return (0);
 }
