@@ -6,7 +6,7 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 10:30:11 by analexan          #+#    #+#             */
-/*   Updated: 2023/07/27 19:25:57 by analexan         ###   ########.fr       */
+/*   Updated: 2023/07/28 11:21:23 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,13 +96,10 @@ char	**ft_split_m(char const *s, char c, int *wc)
 /*
 #include <stdio.h>
 int	main(void)
-// int	main(int ac, char **av)
 {
-	// (void)ac;
-	// char *str = av[1];
 	char	str[] = "1 1";
-	int sussus = 0;
-	char	**arr_of_arr = ft_split_m(str, ' ', &sussus);
+	int wc = 0;
+	char	**arr_of_arr = ft_split_m(str, ' ', &wc);
 	int	i = -1;
 
 	while (arr_of_arr[++i])

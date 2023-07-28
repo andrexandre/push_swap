@@ -6,38 +6,27 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 15:19:34 by analexan          #+#    #+#             */
-/*   Updated: 2023/07/27 19:29:01 by analexan         ###   ########.fr       */
+/*   Updated: 2023/07/28 19:19:58 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-/*
-	if (ac == 1)
-		ac++;
-	pn(ac);
-	ps("intarr = { ");
-	while (ac > 1)
-	{
-		pn(*iarr++);
-		ac--;
-		if (ac > 1)
-			ps(", ");
-	}
-	ps(" }");
-	write(1, "\n", 1);
-*/
-
-void	push_swap(int *iarr, int ac)
+// 3 algorithms: 5 -, 100 -, 500 -
+	// t_lst	*a;
+	// t_lst	*b;
+	// a = NULL;
+	// b = NULL;
+void	push_swap(t_lst *lst)
 {
-	(void)iarr;
-	(void)ac;
+	// pl(lst);
+	(void)lst;
 }
 
 void	*createarr(int ac, char **av, int mode)
 {
 	long	*longarr;
-	int		*intarr;
+	t_lst	*lst;
 	int		i;
 
 	i = 0;
@@ -53,13 +42,10 @@ void	*createarr(int ac, char **av, int mode)
 	}
 	else
 	{
-		intarr = NULL;
-		intarr = (int *)malloc(sizeof(int) * (ac - 1));
-		if (!intarr)
-			return (NULL);
+		lst = NULL;
 		while (++i < ac)
-			intarr[i - 1] = stoi(av[i]);
-		return (intarr);
+			addbck(&lst, stoi(av[i]));
+		return (lst);
 	}
 }
 
@@ -91,14 +77,14 @@ int	check_size_dup(int ac, char **av)
 	return (n);
 }
 
-int	*check_error(int ac, char **av)
+t_lst	*check_error(int ac, char **av)
 {
 	int		i;
 	int		j;
-	int		*intarr;
+	t_lst	*lst;
 
 	i = 0;
-	intarr = NULL;
+	lst = NULL;
 	while (++i < ac)
 	{
 		j = -1;
@@ -112,46 +98,36 @@ int	*check_error(int ac, char **av)
 	}
 	if (check_size_dup(ac, av))
 		return (NULL);
-	intarr = (int *)createarr(ac, av, 1);
-	if (!intarr)
+	lst = (t_lst *)createarr(ac, av, 1);
+	if (!lst)
 		return (NULL);
-	return (intarr);
+	return (lst);
 }
-// 3 algorithms: 5 -, 100 -, 500 -
-	// t_lst	*a;
-	// t_lst	*b;
-	// a = NULL;
-	// b = NULL;
+// time to create the operations
 /*
-#include "functions.c"
+#include "func_lib.c"
 #include "ft_split.c"
-int	main(int ac, char **av)
-{
-	int		*iarr;
-	int		i;
-	ac = 2;
-	av[1] = "-2147483649";
+#include "list_lib.c"
 */
 
 int	main(int ac, char **av)
 {
-	int		*iarr;
 	int		i;
-
-
+	t_lst	*lst;
+	t_lst	*head;
 
 	i = ac;
-	iarr = NULL;
+	head = NULL;
 	if (ac == 1 || (ac == 2 && !av[1][0]))
 		return (0);
 	else if (ac == 2)
 		av = ft_split_m(av[1], ' ', &ac);
 	if (av)
-		iarr = check_error(ac, av);
-	if (!iarr)
+		head = check_error(ac, av);
+	if (!head)
 		write(2, "Error\n", 6);
 	else
-		push_swap(iarr, ac);
+		push_swap(head);
 	if (i == 2)
 	{
 		i = ac;
@@ -159,6 +135,11 @@ int	main(int ac, char **av)
 			free(av[i]);
 		free(av);
 	}
-	free(iarr);
+	while (head)
+	{
+		lst = head;
+		head = head->next;
+		free(lst);
+	}
 	return (0);
 }

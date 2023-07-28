@@ -14,7 +14,7 @@ FLAGS    := -Wall -Wextra -Werror
 #                                 PROGRAM'S SRCS                               #
 ################################################################################
 
-SRCS        :=      push_swap.c functions.c ft_split.c
+SRCS        :=      push_swap.c ft_split.c func_lib.c list_lib.c
                           
 OBJS        := $(SRCS:.c=.o)
 
