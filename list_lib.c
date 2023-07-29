@@ -6,11 +6,17 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 11:15:51 by analexan          #+#    #+#             */
-/*   Updated: 2023/07/28 19:20:27 by analexan         ###   ########.fr       */
+/*   Updated: 2023/07/29 19:01:36 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+void	rrr(t_lst *a, t_lst *b)
+{
+	rra(a);
+	rrb(b);
+}
 
 t_lst	*lstlast(t_lst *head)
 {
@@ -57,15 +63,12 @@ void	pl(t_lst *head)
 {
 	while (head->next)
 	{
-		pn(head->data);
-		ps(" ");
+		prt("%i ", head->data);
 		head = head->next;
 	}
-	pn(head->data);
-	ps("\n");
+	prt("%i\n", head->data);
 }
 /*
-#include "functions.c"
 int	main(void)
 {
 	t_lst	*lst;

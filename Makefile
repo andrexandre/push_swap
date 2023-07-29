@@ -14,8 +14,8 @@ FLAGS    := -Wall -Wextra -Werror
 #                                 PROGRAM'S SRCS                               #
 ################################################################################
 
-SRCS        :=      push_swap.c ft_split.c func_lib.c list_lib.c
-                          
+SRCS        :=      push_swap.c ft_split.c func_lib.c list_lib.c operations.c operations2.c
+
 OBJS        := $(SRCS:.c=.o)
 
 .c.o:
@@ -37,7 +37,7 @@ RM		    := rm -f
 ${NAME}:	${OBJS}
 			@echo "$(GREEN)Compilation ${CLR_RMV}of ${YELLOW}$(NAME) ${CLR_RMV}..."
 			@${CC} ${FLAGS} -o ${NAME} ${OBJS}
-			@echo "$(GREEN)$(NAME) created[0m ✔️"
+			@echo "$(GREEN)$(NAME) created $(GREEN)✔️${CLR_RMV}"
 
 all:		${NAME}
 
@@ -45,21 +45,47 @@ bonus:		all
 
 clean:
 			@ ${RM} *.o */*.o */*/*.o
-			@ echo "$(RED)Deleting $(CYAN)$(NAME) $(CLR_RMV)objs ✔️"
+			@ echo "$(RED)Deleting $(CYAN)$(NAME) $(CLR_RMV)objs $(GREEN)✔️"
 
 fclean:		clean
 			@ ${RM} ${NAME}
-			@ echo "$(RED)Deleting $(CYAN)$(NAME) $(CLR_RMV)binary ✔️"
+			@ echo "$(RED)Deleting $(CYAN)$(NAME) $(CLR_RMV)binary $(GREEN)✔️"
 
 re:			fclean all
 
 e:	fclean
 
 m:	${NAME}
-	@ ./${NAME} ${m}
+	@ ./${NAME} ${M}
 
-v:	${NAME}
-	@ valgrind -s --leak-check=full ./${NAME} ${v}
+M := "1 2 3 4 5"
 
-.PHONY:		all clean fclean re e m v
+args := "--1" "1 2 3a" "1 2 1" "" "1" ${M}
 
+check_leaks: ${NAME}
+	@for arg in $(args); do \
+		output=$$(valgrind --leak-check=full ./${NAME} $$arg 2>&1); \
+		if echo "$$output" | grep -Eqi 'freed|0 errors'; then \
+			echo "${BLUE}Testing with: $$arg" && echo "$(GREEN)No leaks/errors found! ✔️$(CLR_RMV)"; \
+		else \
+			echo "${CYAN}Testing with: $$arg$(RED)" && echo "$$output" | grep -Ei 'total|ERROR S' | sed 's/^[^ ]* //'; \
+		fi; \
+	done
+	@for arg in $(args); do \
+		output=$$(valgrind --leak-check=full ./${NAME} "$$arg" 2>&1); \
+		if echo "$$output" | grep -Eqi 'freed|0 errors'; then \
+			echo "${BLUE}Testing with: \"$$arg\"" && echo "$(GREEN)No leaks/errors found! ✔️$(CLR_RMV)"; \
+		else \
+			echo "${CYAN}Testing with: \"$$arg\"$(RED)" && echo "$$output" | grep -Ei 'total|ERROR S' | sed 's/^[^ ]* //'; \
+		fi; \
+	done
+
+run: ${NAME}
+	@for arg in $(args); do \
+		echo "${BLUE}Running: $$arg$(CLR_RMV)" && ./${NAME} $$arg; \
+	done
+	@for arg in $(args); do \
+		echo "${BLUE}Running: \"$$arg\"$(CLR_RMV)" && ./${NAME} "$$arg"; \
+	done
+
+.PHONY:		all clean fclean re e m v test run

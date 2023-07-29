@@ -6,21 +6,34 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 15:19:34 by analexan          #+#    #+#             */
-/*   Updated: 2023/07/28 19:19:58 by analexan         ###   ########.fr       */
+/*   Updated: 2023/07/29 19:05:12 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+#include <stdio.h>
 
 // 3 algorithms: 5 -, 100 -, 500 -
 	// t_lst	*a;
 	// t_lst	*b;
 	// a = NULL;
 	// b = NULL;
-void	push_swap(t_lst *lst)
+	// pl(a);
+// testing/making a mini terminal to test operations > make m M="1 2 3"
+
+void	push_swap(t_lst *a)
 {
-	// pl(lst);
-	(void)lst;
+	char	c = '\0';
+
+	while (1)
+	{
+		prt("> ");
+		scanf("%c", &c);
+		if (c == 'y')
+			pl(a);
+		if (c == 'n')
+			return ;
+	}
 }
 
 void	*createarr(int ac, char **av, int mode)
@@ -103,36 +116,56 @@ t_lst	*check_error(int ac, char **av)
 		return (NULL);
 	return (lst);
 }
-// time to create the operations
+
+/* time to create the operations
+sa (swap a): Swap the first 2 elements at the top of stack a.
+Do nothing if there is only one or no elements.
+sb (swap b): Swap the first 2 elements at the top of stack b.
+Do nothing if there is only one or no elements.
+pa (push a): Take the first element at the top of b and put it at the top of a.
+Do nothing if b is empty.
+pb (push b): Take the first element at the top of a and put it at the top of b.
+Do nothing if a is empty.
+ra (rotate a): Shift up all elements of stack a by 1.
+The first element becomes the last one.
+rb (rotate b): Shift up all elements of stack b by 1.
+The first element becomes the last one.
+rra (reverse rotate a): Shift down all elements of stack a by 1.
+The last element becomes the first one.
+rrb (reverse rotate b): Shift down all elements of stack b by 1.
+The last element becomes the first one.
+*/
+
 /*
+	// printf("ac: %i\nwc: %i\n", ac, wc);
 #include "func_lib.c"
 #include "ft_split.c"
 #include "list_lib.c"
+// make function to free everything to make the main less than 25 lines
 */
 
 int	main(int ac, char **av)
 {
-	int		i;
+	int		wc;
 	t_lst	*lst;
 	t_lst	*head;
 
-	i = ac;
+	wc = ac;
 	head = NULL;
 	if (ac == 1 || (ac == 2 && !av[1][0]))
 		return (0);
 	else if (ac == 2)
-		av = ft_split_m(av[1], ' ', &ac);
+		av = ft_split_m(av[1], ' ', &wc);
 	if (av)
-		head = check_error(ac, av);
+		head = check_error(wc, av);
 	if (!head)
 		write(2, "Error\n", 6);
 	else
 		push_swap(head);
-	if (i == 2)
+	if (ac == 2)
 	{
-		i = ac;
-		while (--i >= 0)
-			free(av[i]);
+		while (--wc >= 0)
+			free(av[wc]);
 		free(av);
 	}
 	while (head)

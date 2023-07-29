@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   functions.c                                        :+:      :+:    :+:   */
+/*   func_lib.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 17:16:37 by analexan          #+#    #+#             */
-/*   Updated: 2023/07/28 17:28:18 by analexan         ###   ########.fr       */
+/*   Updated: 2023/07/29 18:20:23 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,28 @@ void	ps(char *str)
 {
 	while (*str)
 		write(1, str++, 1);
+}
+
+void	prt(char *string, ...)
+{
+	va_list	args;
+	int		i;
+
+	va_start(args, string);
+	i = 0;
+	while (string[i])
+	{
+		if (string[i] == '%')
+		{
+			i++;
+			if (string[i] == 'i')
+				pn(va_arg(args, int));
+			else if (string[i] == 's')
+				ps(va_arg(args, char *));
+			i++;
+		}
+		else
+			write(1, &string[i++], 1);
+	}
+	va_end(args);
 }
