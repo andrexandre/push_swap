@@ -6,24 +6,22 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 11:15:51 by analexan          #+#    #+#             */
-/*   Updated: 2023/07/29 19:01:36 by analexan         ###   ########.fr       */
+/*   Updated: 2023/07/31 19:19:56 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	rrr(t_lst *a, t_lst *b)
-{
-	rra(a);
-	rrb(b);
-}
-
-t_lst	*lstlast(t_lst *head)
+t_lst	*lstlast(t_lst *head, int n)
 {
 	if (!head)
 		return (NULL);
-	while (head->next)
-		head = head->next;
+	if (!n)
+		while (head->next)
+			head = head->next;
+	else
+		while (head->next->next)
+			head = head->next;
 	return (head);
 }
 
@@ -52,7 +50,7 @@ void	addbck(t_lst **head, int n)
 		return ;
 	node->data = n;
 	node->next = NULL;
-	temp = lstlast(*head);
+	temp = lstlast(*head, 0);
 	if (!*head)
 		*head = node;
 	else
@@ -61,12 +59,43 @@ void	addbck(t_lst **head, int n)
 
 void	pl(t_lst *head)
 {
-	while (head->next)
+	int	i;
+
+	i = 0;
+	if (head)
 	{
-		prt("%i ", head->data);
-		head = head->next;
+		while (head->next)
+		{
+			prt("%i ", head->data);
+			head = head->next;
+			if (i++ > 10000)
+			{
+				prt("your list really has 10'000 items?\n");
+				return ;
+			}
+		}
+		prt("%i\n", head->data);
 	}
-	prt("%i\n", head->data);
+	else
+		prt("(NULL)\n");
+}
+
+void	freeall(t_lst *a, t_lst *b)
+{
+	t_lst	*tmp;
+
+	while (a)
+	{
+		tmp = a;
+		a = a->next;
+		free(tmp);
+	}
+	while (b)
+	{
+		tmp = b;
+		b = b->next;
+		free(tmp);
+	}
 }
 /*
 int	main(void)

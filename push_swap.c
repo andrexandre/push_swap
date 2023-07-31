@@ -6,34 +6,58 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 15:19:34 by analexan          #+#    #+#             */
-/*   Updated: 2023/07/29 19:05:12 by analexan         ###   ########.fr       */
+/*   Updated: 2023/07/31 19:18:23 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include <stdio.h>
 
 // 3 algorithms: 5 -, 100 -, 500 -
-	// t_lst	*a;
-	// t_lst	*b;
-	// a = NULL;
-	// b = NULL;
-	// pl(a);
-// testing/making a mini terminal to test operations > make m M="1 2 3"
+// make algorithm for 3 nodes maybe 5 and then the rest
+// #include <stdio.h>
+// #include <string.h>
+// 	char	c[6] = "h";
+// 	while (*c != 'q')
+// 	{
+// 		system("clear");
+// 		prt("a | ");
+// 		pl(a);
+// 		prt("b | ");
+// 		pl(b);
+// 		ps("> ");
+// 		scanf("%5s", c);
+// 		if (*c == 'h' || !strcmp(c, "help"))
+// 			ps("(h)elp: sa/b/s, pa/b, ra/b/r, rra/b/r, (q)uit\n");
+// 		if (!strcmp(c, "sa"))
+// 			sa_sb(&a);
+// 		if (!strcmp(c, "sb"))
+// 			sa_sb(&b);
+// 		if (!strcmp(c, "ss"))
+// 			ss(&a, &b);
+// 		if (!strcmp(c, "pa"))
+// 			pa_pb(&a, &b, 0);
+// 		if (!strcmp(c, "pb"))
+// 			pa_pb(&a, &b, 1);
+// 		if (!strcmp(c, "ra"))
+// 			ra_rb(&a);
+// 		if (!strcmp(c, "rb"))
+// 			ra_rb(&b);
+// 		if (!strcmp(c, "rr"))
+// 			rr(&a, &b);
+// 		if (!strcmp(c, "rra"))
+// 			rra_rrb(&a);
+// 		if (!strcmp(c, "rrb"))
+// 			rra_rrb(&b);
+// 		if (!strcmp(c, "rrr"))
+// 			rrr(&a, &b);
+// 	}
 
 void	push_swap(t_lst *a)
 {
-	char	c = '\0';
+	t_lst	*b;
 
-	while (1)
-	{
-		prt("> ");
-		scanf("%c", &c);
-		if (c == 'y')
-			pl(a);
-		if (c == 'n')
-			return ;
-	}
+	b = NULL;
+	freeall(a, b);
 }
 
 void	*createarr(int ac, char **av, int mode)
@@ -117,37 +141,17 @@ t_lst	*check_error(int ac, char **av)
 	return (lst);
 }
 
-/* time to create the operations
-sa (swap a): Swap the first 2 elements at the top of stack a.
-Do nothing if there is only one or no elements.
-sb (swap b): Swap the first 2 elements at the top of stack b.
-Do nothing if there is only one or no elements.
-pa (push a): Take the first element at the top of b and put it at the top of a.
-Do nothing if b is empty.
-pb (push b): Take the first element at the top of a and put it at the top of b.
-Do nothing if a is empty.
-ra (rotate a): Shift up all elements of stack a by 1.
-The first element becomes the last one.
-rb (rotate b): Shift up all elements of stack b by 1.
-The first element becomes the last one.
-rra (reverse rotate a): Shift down all elements of stack a by 1.
-The last element becomes the first one.
-rrb (reverse rotate b): Shift down all elements of stack b by 1.
-The last element becomes the first one.
-*/
-
 /*
-	// printf("ac: %i\nwc: %i\n", ac, wc);
 #include "func_lib.c"
 #include "ft_split.c"
 #include "list_lib.c"
-// make function to free everything to make the main less than 25 lines
+#include "operations.c"
+#include "operations2.c"
 */
 
 int	main(int ac, char **av)
 {
 	int		wc;
-	t_lst	*lst;
 	t_lst	*head;
 
 	wc = ac;
@@ -167,12 +171,6 @@ int	main(int ac, char **av)
 		while (--wc >= 0)
 			free(av[wc]);
 		free(av);
-	}
-	while (head)
-	{
-		lst = head;
-		head = head->next;
-		free(lst);
 	}
 	return (0);
 }
