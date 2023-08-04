@@ -6,7 +6,7 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 17:16:37 by analexan          #+#    #+#             */
-/*   Updated: 2023/07/29 18:20:23 by analexan         ###   ########.fr       */
+/*   Updated: 2023/08/04 13:04:04 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,10 @@ void	prt(char *string, ...)
 				pn(va_arg(args, int));
 			else if (string[i] == 's')
 				ps(va_arg(args, char *));
+			else if (string[i] == 'c')
+				write(1, &"abcdefghijklmnopqrstu"[(va_arg(args, int)) - 97], 1);
+			else if (string[i] == 'l')
+				plh(va_arg(args, t_lst *));
 			i++;
 		}
 		else

@@ -6,7 +6,7 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 10:30:11 by analexan          #+#    #+#             */
-/*   Updated: 2023/07/28 11:21:23 by analexan         ###   ########.fr       */
+/*   Updated: 2023/08/04 11:53:20 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,23 @@ char	**ft_split_m(char const *s, char c, int *wc)
 	return (strs);
 }
 
+void	freeall(t_lst *a, t_lst *b)
+{
+	t_lst	*tmp;
+
+	while (a)
+	{
+		tmp = a;
+		a = a->next;
+		free(tmp);
+	}
+	while (b)
+	{
+		tmp = b;
+		b = b->next;
+		free(tmp);
+	}
+}
 /*
 #include <stdio.h>
 int	main(void)

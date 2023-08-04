@@ -6,38 +6,24 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 11:15:51 by analexan          #+#    #+#             */
-/*   Updated: 2023/07/31 19:19:56 by analexan         ###   ########.fr       */
+/*   Updated: 2023/08/04 13:04:09 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-t_lst	*lstlast(t_lst *head, int n)
+// mode = 0: last one, mode = 1: one before last
+t_lst	*lstlast(t_lst *head, int mode)
 {
 	if (!head)
 		return (NULL);
-	if (!n)
+	if (!mode)
 		while (head->next)
 			head = head->next;
 	else
 		while (head->next->next)
 			head = head->next;
 	return (head);
-}
-
-void	addfrt(t_lst **head, int n)
-{
-	t_lst	*node;
-
-	node = malloc(sizeof(t_lst));
-	if (!node)
-		return ;
-	node->data = n;
-	if (*head)
-		node->next = *head;
-	else
-		node->next = NULL;
-	*head = node;
 }
 
 void	addbck(t_lst **head, int n)
@@ -57,46 +43,35 @@ void	addbck(t_lst **head, int n)
 		temp->next = node;
 }
 
-void	pl(t_lst *head)
+int	check_sort(t_lst *lst)
 {
 	int	i;
 
-	i = 0;
-	if (head)
+	i = 1;
+	while (lst->next)
 	{
-		while (head->next)
+		if (lst->data > lst->next->data)
 		{
-			prt("%i ", head->data);
-			head = head->next;
-			if (i++ > 10000)
-			{
-				prt("your list really has 10'000 items?\n");
-				return ;
-			}
+			i = 0;
+			break ;
 		}
-		prt("%i\n", head->data);
+		lst = lst->next;
 	}
-	else
-		prt("(NULL)\n");
+	return (i);
 }
 
-void	freeall(t_lst *a, t_lst *b)
+void	lilsort(t_lst **lst)
 {
-	t_lst	*tmp;
-
-	while (a)
-	{
-		tmp = a;
-		a = a->next;
-		free(tmp);
-	}
-	while (b)
-	{
-		tmp = b;
-		b = b->next;
-		free(tmp);
-	}
+	if ((*lst)->data > (*lst)->next->data
+		 && (*lst)->data > (*lst)->next->next->data)
+		ra_rb(lst, 'a');
+	else if ((*lst)->data < (*lst)->next->data 
+		&& (*lst)->next->data > (*lst)->next->next->data)
+		rra_rrb(lst, 'a');
+	if ((*lst)->data > (*lst)->next->data)
+		sa_sb(lst, 'a');
 }
+
 /*
 int	main(void)
 {
@@ -106,7 +81,7 @@ int	main(void)
 	head = NULL;
 	addfrt(&head, 123);
 	addfrt(&head, 1);
-	pl(head);
+	plh(head);
 	while (head)
 	{
 		lst = head;
