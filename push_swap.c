@@ -6,134 +6,176 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 15:19:34 by analexan          #+#    #+#             */
-/*   Updated: 2023/08/04 13:07:02 by analexan         ###   ########.fr       */
+/*   Updated: 2023/08/09 18:38:11 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+#include <stdio.h>
 
 /* make algorithms
 3=3- perfect
-5=12- great
-100=max=700min=-1500 X
-500=max=5500min=-11500 X
-// add 1 extra function in list_lib and then use debug
+5=12- perfect
+100=max=700min=-1500 works at least
+500=max=5500min=-11500 works at least
 */
-#include <stdio.h>
 void	push_swap(t_lst *a, int len)
 {
+	char	c[6];
 	t_lst	*b;
+	t_lst	*target;
+
+	target = NULL;
 	b = NULL;
 	--len;
-	fill_am(a, len);
+	fill_am(a);
 	if (check_sort(a))
 		len = 0;
-	if (D)
-		len = -10;
-	if (len < 0)
+	if (
+		0
+		// 1
+	)
 	{
-		char	c[6] = "h";
 		while (*c != 'q')
 		{
-			// system("clear"); // (h)elp: sa/b/s, pa/b, ra/b/r, rra/b/r, (q)uit
 			plv(a, b);
-			scanf("%5s", c);
-			if (*c == 's' && c[1] != 's')
+			scanf(" %5s", c);
+			if (*c == 't')
+				target = find_target(a, stoi(&c[1]), stoi(&c[2]));
+			if (*c == 't' && target)
+				prt("tg[%i]->am: %i\n", target->data, target->above_median);
+			else if (*c == 's' && c[1] == 'a')
 				sa_sb(&a, c[1]);
+			else if (*c == 's' && c[1] == 'b')
+				sa_sb(&b, c[1]);
 			else if (c[1] == 's')
 				ss(&a, &b);
 			else if (*c == 'p')
-				pa_pb(&a, &b, c[1]-97);
-			else if (*c == 'r' && c[1] != 'r' && !c[2])
+				pa_pb(&a, &b, c[1] - 97);
+			else if (*c == 'r' && c[1] == 'a' && !c[2])
 				ra_rb(&a, c[1]);
+			else if (*c == 'r' && c[1] == 'b' && !c[2])
+				ra_rb(&b, c[1]);
 			else if (c[1] == 'r' && !c[2])
 				rr(&a, &b);
-			else if (*c == 'r' && c[1] == 'r' && c[2] != 'r')
+			else if (*c == 'r' && c[1] == 'r' && c[2] == 'a')
 				rra_rrb(&a, c[2]);
+			else if (*c == 'r' && c[1] == 'r' && c[2] == 'b')
+				rra_rrb(&b, c[2]);
 			else if (c[2] == 'r')
 				rrr(&a, &b);
 		}
+		len = -1;
 	}
 	if (len == 2)
 		sa_sb(&a, 'a');
 	else if (len == 3)
 		lilsort(&a);
-	else if (len == 4 || len == 5)
+	else if (len == 4 || len == 5
+		// make this into a function
+	)
 	{
-		if (len != 4)
+		if (len == 5)
 			pa_pb(&a, &b, 1);
 		pa_pb(&a, &b, 1);
 		lilsort(&a);
-		if (len != 4)
+		if (len == 5)
 		{
-			if (smallest(b->data, a) || biggest(b->data, a))
-				while (!smallest(a->data, a))
-					ra_rb(&a, 'a');
+			if (is_smallest(b->data, a) || is_biggest(b->data, a))
+			{
+				target = find_target(a, 0, 0);
+				while (!is_smallest(a->data, a))
+					if (target->above_median)
+						ra_rb(&a, 'a');
+				else
+					rra_rrb(&a, 'a');
+			}
 			else
 			{
-				if (biggest(a->data, a))
+				target = find_target(a, 2, b->data);
+				while (!(a->data < b->data && a->next->data > b->data))
+					if (target->above_median)
+						ra_rb(&a, 'a');
+				else
+					rra_rrb(&a, 'a');
+				if (a->data < b->data && a->next->data > b->data)
 					ra_rb(&a, 'a');
-				while (a->data > b->data || a->next->data < b->data)
-					ra_rb(&a, 'a');
-				if (!(a->data > b->data && a->next->data < b->data))
-					ra_rb(&a, 'a');				
 			}
 			pa_pb(&a, &b, 0);
 		}
-		if (smallest(b->data, a) || biggest(b->data, a))
-			while (!smallest(a->data, a))
-				ra_rb(&a, 'a');
+		if (is_smallest(b->data, a) || is_biggest(b->data, a))
+		{
+			target = find_target(a, 0, 0);
+			while (!is_smallest(a->data, a))
+				if (target->above_median)
+					ra_rb(&a, 'a');
+			else
+				rra_rrb(&a, 'a');
+		}
 		else
 		{
-			if (biggest(a->data, a))
-				ra_rb(&a, 'a');
-			if (!(a->next->data < b->data && a->next->next->data > b->data))
-			{
-				if (!(a->data > b->data && a->next->data < b->data))
-					while (a->data > b->data || a->next->data < b->data)
-						rra_rrb(&a, 'a');
-				if (!(a->data > b->data && a->next->data < b->data))
+			target = find_target(a, 2, b->data);
+			while (!(a->data < b->data && a->next->data > b->data))
+				if (target->above_median)
 					ra_rb(&a, 'a');
+			else
+				rra_rrb(&a, 'a');
+			if (a->data < b->data && a->next->data > b->data)
+				ra_rb(&a, 'a');
+		}
+		pa_pb(&a, &b, 0);
+		if (!check_sort(a))
+		{
+			target = find_target(a, 0, 0);
+			while (!check_sort(a))
+				if (target->above_median)
+					ra_rb(&a, 'a');
+			else
+				rra_rrb(&a, 'a');
+		}
+	}
+	else if (len > 5
+		// make this into a function
+	)
+	{
+		pa_pb(&a, &b, 1);
+		pa_pb(&a, &b, 1);
+		if (b->data < b->next->data)
+			sa_sb(&b, 'b');
+		while (a)
+		{
+			if (is_smallest(a->data, b) || is_biggest(a->data, b))
+			{
+				target = find_target(b, 1, 0);
+				while (!is_biggest(b->data, b))
+					if (target->above_median)
+						ra_rb(&b, 'b');
+				else
+					rra_rrb(&b, 'b');
 			}
 			else
 			{
-				ra_rb(&a, 'a');
-				ra_rb(&a, 'a');
+				target = find_target(a, 2, b->data);
+				while (!(b->data > a->data && b->next->data < a->data))
+					if (target->above_median)
+						ra_rb(&b, 'b');
+				else
+					rra_rrb(&b, 'b');
+				if (b->data > a->data && b->next->data < a->data)
+					ra_rb(&b, 'b');
 			}
+			pa_pb(&a, &b, 1);
 		}
-		pa_pb(&a, &b, 0);
-		if (biggest(a->next->data, a) && smallest(a->next->next->data, a))
-		{
-			ra_rb(&a, 'a');
-			ra_rb(&a, 'a');
-		}
+		while (b)
+			pa_pb(&a, &b, 0);
+		target = find_target(a, 0, 0);
+		while (!is_smallest(a->data, a))
+			if (target->above_median)
+				ra_rb(&a, 'a');
 		else
-			while (!check_sort(a) && !(biggest(a->data, a) && smallest(a->next->data, a)))
-				rra_rrb(&a, 'a');
-		if (biggest(a->data, a) && smallest(a->next->data, a))
-			ra_rb(&a, 'a');
+			rra_rrb(&a, 'a');
 	}
-	// else if (len < 101)
-	// {
-	// 	t_lst *tmp = a;
-	// 	fill_am(a, len);
-	// 	// simple ra median algorithm
-	// 	int	asd;
-
-	// 	asd = 0;
-	// 	if (tmp)
-	// 	{
-	// 		while (tmp->next)
-	// 		{
-	// 			prt("n[%i]: %i/a:%i\n", asd, tmp->data, tmp->above_median);
-	// 			tmp = tmp->next;
-	// 		}
-	// 		prt("n[%i]: %i/a:%i\n", asd, tmp->data, tmp->above_median);
-	// 	}
-	// 	else
-	// 		prt("(NULL)\n");
-	// }
-	if (!check_sort(a))
+	if (len && !check_sort(a))
 		prt("list not sorted!\n%l", a);
 	freeall(a, b);
 }
@@ -225,6 +267,7 @@ t_lst	*check_error(int ac, char **av)
 #include "list_lib.c"
 #include "operations.c"
 #include "operations2.c"
+#include "debug.c"
 */
 
 int	main(int ac, char **av)

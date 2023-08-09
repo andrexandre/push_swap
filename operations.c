@@ -6,7 +6,7 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 17:04:41 by analexan          #+#    #+#             */
-/*   Updated: 2023/08/03 13:58:18 by analexan         ###   ########.fr       */
+/*   Updated: 2023/08/09 18:23:52 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	sa_sb(t_lst **fst_nd, char c)
 	(*fst_nd)->next = (*fst_nd)->next->next;
 	tmp->next = *fst_nd;
 	*fst_nd = tmp;
+	fill_am(*fst_nd);
 }
 
 void	ss(t_lst **a, t_lst **b)
@@ -55,6 +56,8 @@ void	pa_pb(t_lst **a, t_lst **b, int mode)
 		tmp->next = *a;
 		*a = tmp;
 	}
+	fill_am(*a);
+	fill_am(*b);
 }
 
 void	ra_rb(t_lst **fst_nd, char c)
@@ -69,6 +72,7 @@ void	ra_rb(t_lst **fst_nd, char c)
 	lstlast(*fst_nd, 0)->next = *fst_nd;
 	(*fst_nd)->next = NULL;
 	*fst_nd = tmp;
+	fill_am(*fst_nd);
 }
 
 void	rr(t_lst **a, t_lst **b)

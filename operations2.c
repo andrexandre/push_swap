@@ -6,7 +6,7 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 17:04:41 by analexan          #+#    #+#             */
-/*   Updated: 2023/08/04 12:58:05 by analexan         ###   ########.fr       */
+/*   Updated: 2023/08/09 18:32:36 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	rra_rrb(t_lst **fst_nd, char c)
 	last->next->next = *fst_nd;
 	*fst_nd = last->next;
 	last->next = NULL;
+	fill_am(*fst_nd);
 }
 
 void	rrr(t_lst **a, t_lst **b)
@@ -33,14 +34,14 @@ void	rrr(t_lst **a, t_lst **b)
 	ps("rrr\n");
 }
 
-int	smallest(int n, t_lst *lst)
+int	is_smallest(int node_data, t_lst *lst)
 {
 	int	i;
 
 	i = 1;
 	while (lst)
 	{
-		if (lst->data < n)
+		if (lst->data < node_data)
 		{
 			i = 0;
 			break ;
@@ -51,14 +52,14 @@ int	smallest(int n, t_lst *lst)
 	return (i);
 }
 
-int	biggest(int n, t_lst *lst)
+int	is_biggest(int node_data, t_lst *lst)
 {
 	int	i;
 
 	i = 1;
 	while (lst)
 	{
-		if (lst->data > n)
+		if (lst->data > node_data)
 		{
 			i = 0;
 			break ;
@@ -69,22 +70,31 @@ int	biggest(int n, t_lst *lst)
 	return (i);
 }
 
-void	fill_am(t_lst *lst, int len)
+void	fill_am(t_lst *lst)
 {
-	int	i;
-	
-	i = 0;
-	while (i <= len / 2)
+	int		i;
+	int		len;
+	t_lst	*tmp;
+
+	tmp = lst;
+	len = 0;
+	i = -1;
+	if (!lst)
+		return ;
+	while (tmp)
 	{
-		lst->above_median = 0;
-		lst = lst->next;
-		i++;
+		len++;
+		if (!tmp->next)
+			break ;
+		tmp = tmp->next;
 	}
-	while (i < len)
+	while (++i < len)
 	{
-		lst->above_median = 1;
+		if (i <= len / 2)
+			lst->above_median = 1;
+		else
+			lst->above_median = 0;
 		if (lst->next)
 			lst = lst->next;
-		i++;
 	}
 }

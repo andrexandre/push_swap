@@ -16,7 +16,7 @@ FLAGS    := -Wall -Wextra -Werror
 
 SRCS        :=      push_swap.c ft_split.c func_lib.c list_lib.c operations.c operations2.c debug.c
 
-OBJS        := $(SRCS:.c=.o)
+OBJS        := $(addprefix objs/, $(SRCS:.c=.o))
 
 .c.o:
 	@${CC} ${FLAGS} -c $< -o ${<:.c=.o}
@@ -25,7 +25,6 @@ OBJS        := $(SRCS:.c=.o)
 #                                  Makefile  objs                              #
 ################################################################################
 
-
 CLR_RMV		:= \033[0m
 RED		    := \033[1;31m
 GREEN		:= \033[1;32m
@@ -33,6 +32,10 @@ YELLOW		:= \033[1;33m
 BLUE		:= \033[1;34m
 CYAN 		:= \033[1;36m
 RM		    := rm -f
+
+objs/%.o: %.c
+	@mkdir -p $(@D)
+	@$(CC) $(FLAGS) -c $< -o $@
 
 ${NAME}:	${OBJS}
 			@echo "$(GREEN)Compilation ${CLR_RMV}of ${YELLOW}$(NAME) ${CLR_RMV}..."
@@ -58,9 +61,15 @@ e:	fclean
 m:	${NAME}
 	@ ./${NAME} ${M}
 
-M := "1 2 3 4 5"
+args := "--1" "1 2 3a" "1 2 1" "" "1" "3 4 2 5 1" "2 1 3 6 5 8 23 34 45 67 0 26 48 70"
 
-args := "--1" "1 2 3a" "1 2 1" "" "1" ${M}
+run: ${NAME}
+	@for arg in $(args); do \
+		echo "${BLUE}Running: $$arg$(CLR_RMV)" && ./${NAME} $$arg; \
+	done
+	@for arg in $(args); do \
+		echo "${BLUE}Running: \"$$arg\"$(CLR_RMV)" && ./${NAME} "$$arg"; \
+	done
 
 check_leaks: ${NAME}
 	@for arg in $(args); do \
@@ -80,12 +89,4 @@ check_leaks: ${NAME}
 		fi; \
 	done
 
-run: ${NAME}
-	@for arg in $(args); do \
-		echo "${BLUE}Running: $$arg$(CLR_RMV)" && ./${NAME} $$arg; \
-	done
-	@for arg in $(args); do \
-		echo "${BLUE}Running: \"$$arg\"$(CLR_RMV)" && ./${NAME} "$$arg"; \
-	done
-
-.PHONY:		all clean fclean re e m v test run
+.PHONY:		all clean fclean re e m run check_leaks

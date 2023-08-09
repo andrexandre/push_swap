@@ -6,7 +6,7 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 11:15:51 by analexan          #+#    #+#             */
-/*   Updated: 2023/08/04 13:04:09 by analexan         ###   ########.fr       */
+/*   Updated: 2023/08/09 15:38:43 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int	check_sort(t_lst *lst)
 	int	i;
 
 	i = 1;
+	if (!lst)
+		return (i);
 	while (lst->next)
 	{
 		if (lst->data > lst->next->data)
@@ -62,8 +64,8 @@ int	check_sort(t_lst *lst)
 
 void	lilsort(t_lst **lst)
 {
-	if ((*lst)->data > (*lst)->next->data
-		 && (*lst)->data > (*lst)->next->next->data)
+	if ((*lst)->data > (*lst)->next->data 
+		&& (*lst)->data > (*lst)->next->next->data)
 		ra_rb(lst, 'a');
 	else if ((*lst)->data < (*lst)->next->data 
 		&& (*lst)->next->data > (*lst)->next->next->data)
@@ -72,6 +74,45 @@ void	lilsort(t_lst **lst)
 		sa_sb(lst, 'a');
 }
 
+// mode = 0: smallest; = 1: biggest; = 2: between node_data;
+t_lst	*find_target(t_lst *lst, int mode, int node_data)
+{
+	t_lst	*target;
+
+	target = lst;
+	if (!mode)
+	{
+		while (lst->next)
+		{
+			if (lst->data < target->data)
+				target = lst;
+			lst = lst->next;
+		}
+		if (lst->data < target->data)
+			target = lst;
+	}
+	else if (mode == 1)
+	{
+		while (lst->next)
+		{
+			if (lst->data > target->data)
+				target = lst;
+			lst = lst->next;
+		}
+		if (lst->data > target->data)
+			target = lst;
+	}
+	else
+	{
+		if (lstlast(lst, 0)->data < node_data && node_data < lst->data)
+			return (lstlast(lst, 0));
+		while (lst->next && !(lst->data < node_data 
+				&& node_data < lst->next->data))
+			lst = lst->next;
+		return (lst);
+	}
+	return (target);
+}
 /*
 int	main(void)
 {

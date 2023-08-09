@@ -6,7 +6,7 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 15:19:43 by analexan          #+#    #+#             */
-/*   Updated: 2023/08/04 13:04:11 by analexan         ###   ########.fr       */
+/*   Updated: 2023/08/09 18:37:00 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,6 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdarg.h>
-
-# ifndef D
-#  define D 0
-# endif
 
 typedef struct s_lst
 {
@@ -47,10 +43,10 @@ void	freeall(t_lst *a, t_lst *b);
 int		check_sort(t_lst *lst);
 void	lilsort(t_lst **a);
 void	plv(t_lst *a, t_lst *b);
-int		smallest(int n, t_lst *lst);
-int		biggest(int n, t_lst *lst);
-void	fill_am(t_lst *lst, int len);
-void	*stoloi(char *str, int mode);
-
+int		is_smallest(int node_data, t_lst *lst);
+int		is_biggest(int node_data, t_lst *lst);
+void	fill_am(t_lst *lst);
+t_lst	*find_target(t_lst *lst, int mode, int node_data);
+int		lstlen(t_lst *lst);
 
 #endif

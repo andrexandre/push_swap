@@ -93,7 +93,7 @@ clean :
 	@echo "clean done"
 
 fclean : clean
-	@rm -rf  $(CHECKER) $(CHECKER_BONUS) $(CHECKER_RADIX)
+	@rm -rf $(CHECKER_BONUS) $(CHECKER_RADIX)
 	@$(MAKE) fclean -C $(LIB_PATH)
 	@echo "fclean done"
 
