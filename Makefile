@@ -14,7 +14,7 @@ FLAGS    := -Wall -Wextra -Werror
 #                                 PROGRAM'S SRCS                               #
 ################################################################################
 
-SRCS        :=      push_swap.c ft_split.c func_lib.c list_lib.c operations.c operations2.c debug.c
+SRCS        :=      push_swap.c ft_split.c operations.c operations2.c tool_lib.c list_lib.c sort_lib.c debug.c
 
 OBJS        := $(addprefix objs/, $(SRCS:.c=.o))
 

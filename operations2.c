@@ -6,7 +6,7 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 17:04:41 by analexan          #+#    #+#             */
-/*   Updated: 2023/08/09 18:32:36 by analexan         ###   ########.fr       */
+/*   Updated: 2023/08/10 16:39:59 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	rra_rrb(t_lst **fst_nd, char c)
 	last->next->next = *fst_nd;
 	*fst_nd = last->next;
 	last->next = NULL;
-	fill_am(*fst_nd);
+	fill_list(*fst_nd);
 }
 
 void	rrr(t_lst **a, t_lst **b)
@@ -34,67 +34,46 @@ void	rrr(t_lst **a, t_lst **b)
 	ps("rrr\n");
 }
 
-int	is_smallest(int node_data, t_lst *lst)
+// mode = 0: last one, mode = 1: one before last
+t_lst	*lstlast(t_lst *head, int mode)
 {
-	int	i;
-
-	i = 1;
-	while (lst)
-	{
-		if (lst->data < node_data)
-		{
-			i = 0;
-			break ;
-		}
-		else
-			lst = lst->next;
-	}
-	return (i);
+	if (!head)
+		return (NULL);
+	if (!mode)
+		while (head->next)
+			head = head->next;
+	else
+		while (head->next->next)
+			head = head->next;
+	return (head);
 }
 
-int	is_biggest(int node_data, t_lst *lst)
+void	addbck(t_lst **head, int n)
 {
-	int	i;
+	t_lst	*node;
+	t_lst	*temp;
 
-	i = 1;
-	while (lst)
-	{
-		if (lst->data > node_data)
-		{
-			i = 0;
-			break ;
-		}
-		else
-			lst = lst->next;
-	}
-	return (i);
-}
-
-void	fill_am(t_lst *lst)
-{
-	int		i;
-	int		len;
-	t_lst	*tmp;
-
-	tmp = lst;
-	len = 0;
-	i = -1;
-	if (!lst)
+	node = malloc(sizeof(t_lst));
+	if (!node)
 		return ;
-	while (tmp)
+	node->data = n;
+	node->next = NULL;
+	temp = lstlast(*head, 0);
+	if (!*head)
+		*head = node;
+	else
+		temp->next = node;
+}
+
+int	check_sort(t_lst *lst)
+{
+	if (!lst)
+		return (1);
+	while (lst->next)
 	{
-		len++;
-		if (!tmp->next)
-			break ;
-		tmp = tmp->next;
+		if (lst->data > lst->next->data)
+			return (0);
+		lst = lst->next;
 	}
-	while (++i < len)
-	{
-		if (i <= len / 2)
-			lst->above_median = 1;
-		else
-			lst->above_median = 0;
-		if (lst->next)
-			lst = lst->next;
-	}
+	return (1);
 }

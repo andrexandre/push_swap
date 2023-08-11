@@ -6,78 +6,104 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 11:15:51 by analexan          #+#    #+#             */
-/*   Updated: 2023/08/09 15:38:43 by analexan         ###   ########.fr       */
+/*   Updated: 2023/08/11 12:36:45 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-// mode = 0: last one, mode = 1: one before last
-t_lst	*lstlast(t_lst *head, int mode)
+int	is_smallest(int node_data, t_lst *lst)
 {
-	if (!head)
-		return (NULL);
-	if (!mode)
-		while (head->next)
-			head = head->next;
-	else
-		while (head->next->next)
-			head = head->next;
-	return (head);
-}
-
-void	addbck(t_lst **head, int n)
-{
-	t_lst	*node;
-	t_lst	*temp;
-
-	node = malloc(sizeof(t_lst));
-	if (!node)
-		return ;
-	node->data = n;
-	node->next = NULL;
-	temp = lstlast(*head, 0);
-	if (!*head)
-		*head = node;
-	else
-		temp->next = node;
-}
-
-int	check_sort(t_lst *lst)
-{
-	int	i;
-
-	i = 1;
-	if (!lst)
-		return (i);
-	while (lst->next)
+	while (lst)
 	{
-		if (lst->data > lst->next->data)
-		{
-			i = 0;
-			break ;
-		}
+		if (lst->data < node_data)
+			return (0);
 		lst = lst->next;
 	}
-	return (i);
+	return (1);
 }
 
-void	lilsort(t_lst **lst)
+int	is_biggest(int node_data, t_lst *lst)
 {
-	if ((*lst)->data > (*lst)->next->data 
-		&& (*lst)->data > (*lst)->next->next->data)
-		ra_rb(lst, 'a');
-	else if ((*lst)->data < (*lst)->next->data 
-		&& (*lst)->next->data > (*lst)->next->next->data)
-		rra_rrb(lst, 'a');
-	if ((*lst)->data > (*lst)->next->data)
-		sa_sb(lst, 'a');
+	while (lst)
+	{
+		if (lst->data > node_data)
+			return (0);
+		lst = lst->next;
+	}
+	return (1);
+}
+
+// fill the list with the correct index, above_median and push_price
+void	fill_list(t_lst *lst)
+{
+	int		i;
+	int		len;
+
+	if (!lst)
+		return ;
+	len = lstlen(lst);
+	i = -1;
+	while (++i < len)
+	{
+		lst->index = i;
+		if (i <= len / 2)
+			lst->above_median = 1;
+		else
+			lst->above_median = 0;
+		if (lst->above_median)
+			lst->push_price = i;
+		else
+			lst->push_price = len - i;
+		if (lst->next)
+			lst = lst->next;
+	}
+}
+
+// mode = 0: fill a based on b; mode = 1: fill b based on a
+void	fill_node_price(t_lst *a, t_lst *b, int mode)
+{
+	t_lst	*target;
+	int		len;
+	int		i;
+
+	target = NULL;
+	if (!a || !b)
+		return ;
+	i = -1;
+	if (!mode)
+		len = lstlen(a);
+	else
+		len = lstlen(b);
+	while (!mode && ++i < len)
+	{
+		if (is_smallest(a->data, b) || is_biggest(a->data, b))
+			target = find_target(b, 1, 0);
+		else
+			target = find_target(b, 2, a->data);
+		a->node_price = a->push_price + target->push_price;
+		if (a->next)
+			a = a->next;
+	}
+	i = -1;
+	while (mode && ++i < len)
+	{
+		if (is_smallest(a->data, b) || is_biggest(a->data, b))
+			target = find_target(b, 1, 0);
+		else
+			target = find_target(a, 2, b->data);
+		b->node_price = b->push_price + target->push_price;
+		if (b->next)
+			b = b->next;
+	}
 }
 
 // mode = 0: smallest; = 1: biggest; = 2: between node_data;
+// if 0 or 1, node_data is used to check if its a or b
 t_lst	*find_target(t_lst *lst, int mode, int node_data)
 {
 	t_lst	*target;
+	t_lst	*last;
 
 	target = lst;
 	if (!mode)
@@ -102,12 +128,10 @@ t_lst	*find_target(t_lst *lst, int mode, int node_data)
 		if (lst->data > target->data)
 			target = lst;
 	}
-	else
+	else if (mode == 2)
 	{
-		if (lstlast(lst, 0)->data < node_data && node_data < lst->data)
-			return (lstlast(lst, 0));
-		while (lst->next && !(lst->data < node_data 
-				&& node_data < lst->next->data))
+		last = lstlast(lst, 0);
+		while (lst->next && !(same(last->data, node_data, lst->data)))
 			lst = lst->next;
 		return (lst);
 	}

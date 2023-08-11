@@ -6,11 +6,95 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 12:56:14 by analexan          #+#    #+#             */
-/*   Updated: 2023/08/09 16:43:51 by analexan         ###   ########.fr       */
+/*   Updated: 2023/08/11 11:17:55 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+#include <stdio.h>
+
+void	debugger(t_lst *a, t_lst *b, int *len)
+{
+	char	c[6];
+	t_lst	*tmp = a;
+	t_lst	*target;
+	int		pl = 1;
+
+	pa_pb(&a, &b, 1);
+	pa_pb(&a, &b, 1);
+	while (*c != 'q')
+	{
+		if (*c == 'f')
+			(void)0;
+		else if (pl == 1)
+			plv(a, b);
+		else
+			prt("a | %lb | %l> ", a, b);
+		// *c = 'f';
+		scanf("%5s", c);
+		if (*c == 'l')
+			pl = -pl;
+		else if (*c == 'f')
+		{
+			target = find_target(a, 2, b->data);
+			prt("tar[%i]: %i a:%i p:%i n:%i\n", target->index, target->data, 
+						target->above_median, target->push_price, target->node_price);
+			fill_node_price(a, b, 0);
+			fill_node_price(a, b, 1);
+			tmp = a;
+			if (tmp)
+			{
+				while (tmp->next)
+				{
+					prt("n[%i]: %i a:%i p:%i n:%i\n", tmp->index, tmp->data, 
+						tmp->above_median, tmp->push_price, tmp->node_price);
+					tmp = tmp->next;
+				}
+				prt("n[%i]: %i a:%i p:%i n:%i\n> ", tmp->index, tmp->data, 
+					tmp->above_median, tmp->push_price, tmp->node_price);
+			}
+			else
+				prt("(NULL)\n> ");
+			tmp = b;
+			if (tmp)
+			{
+				prt("\n");
+				while (tmp->next)
+				{
+					prt("n[%i]: %i a:%i p:%i n:%i\n", tmp->index, tmp->data, 
+						tmp->above_median, tmp->push_price, tmp->node_price);
+					tmp = tmp->next;
+				}
+				prt("n[%i]: %i a:%i p:%i n:%i\n> ", tmp->index, tmp->data, 
+					tmp->above_median, tmp->push_price, tmp->node_price);
+			}
+			else
+				prt("(NULL)\n> ");
+			// *c = 'q';
+		}
+		else if (*c == 's' && c[1] == 'a')
+			sa_sb(&a, c[1]);
+		else if (*c == 's' && c[1] == 'b')
+			sa_sb(&b, c[1]);
+		else if (c[1] == 's')
+			ss(&a, &b);
+		else if (*c == 'p')
+			pa_pb(&a, &b, c[1] - 97);
+		else if (*c == 'r' && c[1] == 'a' && !c[2])
+			ra_rb(&a, c[1]);
+		else if (*c == 'r' && c[1] == 'b' && !c[2])
+			ra_rb(&b, c[1]);
+		else if (c[1] == 'r' && !c[2])
+			rr(&a, &b);
+		else if (*c == 'r' && c[1] == 'r' && c[2] == 'a')
+			rra_rrb(&a, c[2]);
+		else if (*c == 'r' && c[1] == 'r' && c[2] == 'b')
+			rra_rrb(&b, c[2]);
+		else if (c[2] == 'r')
+			rrr(&a, &b);
+	}
+	*len = -1;
+}
 
 void	plv(t_lst *a, t_lst *b)
 {
@@ -48,9 +132,9 @@ void	plh(t_lst *head)
 		{
 			prt("%i ", head->data);
 			head = head->next;
-			if (i++ > 10000)
+			if (i++ > 1000)
 			{
-				prt("your list really has 10'000 items?\n");
+				prt("Does your list really have 1000 items?\n");
 				return ;
 			}
 		}
@@ -76,24 +160,3 @@ int	lstlen(t_lst *lst)
 		i++;
 	return (i);
 }
-/*
-		t_lst *tmp = a;
-		fill_am(a);
-		int	asd;
-
-		asd = 0;
-		if (tmp)
-		{
-			while (tmp->next)
-			{
-				prt("n[%i]: %i/a:%i\n", asd, tmp->data, tmp->above_median);
-				tmp = tmp->next;
-			}
-			prt("n[%i]: %i/a:%i\n", asd, tmp->data, tmp->above_median);
-		}
-		else
-			prt("(NULL)\n");
-
-prt("a | %lb | %l> ", a, b);
-cc -Wall -Wextra -Werror -D DEB=1 *.c && ./a.out 1 3 2
-*/
