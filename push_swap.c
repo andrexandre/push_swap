@@ -6,18 +6,19 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 15:19:34 by analexan          #+#    #+#             */
-/*   Updated: 2023/08/11 12:54:10 by analexan         ###   ########.fr       */
+/*   Updated: 2023/08/11 19:00:03 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
 /* make algorithms
-3=3- perfect
-5=12- perfect
-100=max=700min=-1500 works at least
-500=max=5500min=-11500 works at least
+3= 3- perfect
+5= 12- perfect
+100= min=700 max=-1500 758 almost perfect
+500= min=5500 max=-11500 9368 almost perfect
 */
+// debugger is an invalid comment and this has TOO_MANY_LINES
 void	push_swap(t_lst *a, t_lst *b, int len)
 {
 	t_lst	*target;
@@ -28,8 +29,7 @@ void	push_swap(t_lst *a, t_lst *b, int len)
 	fill_list(a);
 	if (check_sort(a))
 		len = 0;
-	// (un)comment the next line to toggle debugger
-	// debugger(a, b, &len);
+	// debugger(a, b, &len); // (un)comment this line to toggle debugger
 	if (len == 2)
 		sa_sb(&a, 'a');
 	else if (len == 3)
@@ -58,27 +58,23 @@ void	push_swap(t_lst *a, t_lst *b, int len)
 				last = lstlast(a, 0);
 				target = find_target(a, 2, b->data);
 				if (target->above_median)
-					while (!(same(last->data, b->data, a->data)))
+				{
+					while (!(last->data < b->data && b->data < a->data))
 					{
 						ra_rb(&a, 'a');
 						last = lstlast(a, 0);
 					}
+				}
 				else
-					while (!(same(last->data, b->data, a->data)))
+				{
+					while (!(last->data < b->data && b->data < a->data))
 					{
 						rra_rrb(&a, 'a');
 						last = lstlast(a, 0);
 					}
-				if (same(a->data, b->data, a->next->data))
+				}
+				if (a->data < b->data && b->data < a->next->data)
 					ra_rb(&a, 'a');
-				// target = find_target(a, 2, b->data);
-				// while (!(a->data < b->data && a->next->data > b->data))
-				// 	if (target->above_median)
-				// 		ra_rb(&a, 'a');
-				// else
-				// 	rra_rrb(&a, 'a');
-				// if (a->data < b->data && a->next->data > b->data)
-				// 	ra_rb(&a, 'a');
 			}
 			pa_pb(&a, &b, 0);
 		}
@@ -96,18 +92,22 @@ void	push_swap(t_lst *a, t_lst *b, int len)
 			last = lstlast(a, 0);
 			target = find_target(a, 2, b->data);
 			if (target->above_median)
-				while (!(same(last->data, b->data, a->data)))
+			{
+				while (!(last->data < b->data && b->data < a->data))
 				{
 					ra_rb(&a, 'a');
 					last = lstlast(a, 0);
 				}
+			}
 			else
-				while (!(same(last->data, b->data, a->data)))
+			{
+				while (!(last->data < b->data && b->data < a->data))
 				{
 					rra_rrb(&a, 'a');
 					last = lstlast(a, 0);
 				}
-			if (same(a->data, b->data, a->next->data))
+			}
+			if (a->data < b->data && b->data < a->next->data)
 				ra_rb(&a, 'a');
 		}
 		pa_pb(&a, &b, 0);
@@ -125,13 +125,20 @@ void	push_swap(t_lst *a, t_lst *b, int len)
 		// turn this into a function
 	)
 	{
+		// to-do:
+		// optimize by doing rr if ra and rb is done and norm
 		pa_pb(&a, &b, 1);
 		pa_pb(&a, &b, 1);
-		if (b->data < b->next->data)
-			sa_sb(&b, 'b');
 		while (a)
 		{
-			fill_node_price(a, b, 0);
+			target = fill_node_price(
+					// target = cheapest
+					a, b);
+			while (a != target)
+				if (target->above_median)
+					ra_rb(&a, 'a');
+			else
+				rra_rrb(&a, 'a');
 			if (is_smallest(a->data, b) || is_biggest(a->data, b))
 			{
 				target = find_target(b, 1, 0);
@@ -144,22 +151,28 @@ void	push_swap(t_lst *a, t_lst *b, int len)
 			else
 			{
 				last = lstlast(b, 0);
-				target = find_target(a, 2, b->data);
+				target = find_target(b, 3, a->data);
 				if (target->above_median)
-					while (!same(b->data, a->data, last->data))
+				{
+					while (!(b->data < a->data && a->data < last->data))
 					{
 						ra_rb(&b, 'b');
 						last = lstlast(b, 0);
 					}
+				}
 				else
-					while (!same(b->data, a->data, last->data))
+				{
+					while (!(b->data < a->data && a->data < last->data))
 					{
 						rra_rrb(&b, 'b');
 						last = lstlast(b, 0);
 					}
+				}
 				if (b->data > a->data && a->data > b->next->data)
 					ra_rb(&b, 'b');
 			}
+			if (!a->next)
+				break ;
 			pa_pb(&a, &b, 1);
 		}
 		while (b)

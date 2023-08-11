@@ -6,7 +6,7 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 15:19:43 by analexan          #+#    #+#             */
-/*   Updated: 2023/08/11 10:27:25 by analexan         ###   ########.fr       */
+/*   Updated: 2023/08/11 18:46:26 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdarg.h>
-# define same(a, b, c) (a < b && b < c)
+
 typedef struct s_lst
 {
 	int				data;
@@ -55,7 +55,7 @@ int		is_smallest(int node_data, t_lst *lst);
 int		is_biggest(int node_data, t_lst *lst);
 void	fill_list(t_lst *lst);
 t_lst	*find_target(t_lst *lst, int mode, int node_data);
-void	fill_node_price(t_lst *a, t_lst *b, int mode);
+t_lst	*fill_node_price(t_lst *a, t_lst *b);
 
 // sort_lib
 void	lilsort(t_lst **a);

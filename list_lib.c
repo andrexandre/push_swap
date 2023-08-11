@@ -6,7 +6,7 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 11:15:51 by analexan          #+#    #+#             */
-/*   Updated: 2023/08/11 12:36:45 by analexan         ###   ########.fr       */
+/*   Updated: 2023/08/11 18:54:49 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ int	is_biggest(int node_data, t_lst *lst)
 // fill the list with the correct index, above_median and push_price
 void	fill_list(t_lst *lst)
 {
-	int		i;
-	int		len;
+	int	i;
+	int	len;
 
 	if (!lst)
 		return ;
@@ -60,82 +60,77 @@ void	fill_list(t_lst *lst)
 	}
 }
 
-// mode = 0: fill a based on b; mode = 1: fill b based on a
-void	fill_node_price(t_lst *a, t_lst *b, int mode)
+// fill the node_price of a based on target b
+t_lst	*fill_node_price(t_lst *a, t_lst *b)
 {
 	t_lst	*target;
-	int		len;
-	int		i;
+	t_lst	*cheapest;
 
 	target = NULL;
 	if (!a || !b)
-		return ;
-	i = -1;
-	if (!mode)
-		len = lstlen(a);
-	else
-		len = lstlen(b);
-	while (!mode && ++i < len)
+		return (a);
+	cheapest = a;
+	while (a)
 	{
 		if (is_smallest(a->data, b) || is_biggest(a->data, b))
 			target = find_target(b, 1, 0);
 		else
-			target = find_target(b, 2, a->data);
+			target = find_target(b, 3, a->data);
 		a->node_price = a->push_price + target->push_price;
-		if (a->next)
-			a = a->next;
+		a = a->next;
 	}
-	i = -1;
-	while (mode && ++i < len)
+	a = cheapest;
+	while (a)
 	{
-		if (is_smallest(a->data, b) || is_biggest(a->data, b))
-			target = find_target(b, 1, 0);
-		else
-			target = find_target(a, 2, b->data);
-		b->node_price = b->push_price + target->push_price;
-		if (b->next)
-			b = b->next;
+		if (a->node_price < cheapest->node_price)
+			cheapest = a;
+		a = a->next;
 	}
+	return (cheapest);
 }
 
-// mode = 0: smallest; = 1: biggest; = 2: between node_data;
-// if 0 or 1, node_data is used to check if its a or b
+// mode = 0: smallest; = 1: biggest; = 2: 1st between node_data
+// from smallest; = 3: 1st between node_data from biggest;
+// this has TOO_MANY_LINES
 t_lst	*find_target(t_lst *lst, int mode, int node_data)
 {
-	t_lst	*target;
-	t_lst	*last;
+	t_lst	*temp;
 
-	target = lst;
+	temp = lst;
+	fill_list(lst);
 	if (!mode)
 	{
-		while (lst->next)
+		while (lst)
 		{
-			if (lst->data < target->data)
-				target = lst;
+			if (lst->data < temp->data)
+				temp = lst;
 			lst = lst->next;
 		}
-		if (lst->data < target->data)
-			target = lst;
 	}
 	else if (mode == 1)
 	{
-		while (lst->next)
+		while (lst)
 		{
-			if (lst->data > target->data)
-				target = lst;
+			if (lst->data > temp->data)
+				temp = lst;
 			lst = lst->next;
 		}
-		if (lst->data > target->data)
-			target = lst;
 	}
 	else if (mode == 2)
 	{
-		last = lstlast(lst, 0);
-		while (lst->next && !(same(last->data, node_data, lst->data)))
+		temp = lstlast(lst, 0);
+		while (lst->next && !(temp->data < node_data && node_data < lst->data))
 			lst = lst->next;
-		return (lst);
+		temp = lst;
 	}
-	return (target);
+	else if (mode == 3)
+	{
+		while (lst->next && !(lst->data > node_data
+				&& node_data > lst->next->data))
+			lst = lst->next;
+		temp = lst;
+	}
+	return (temp);
 }
 /*
 int	main(void)

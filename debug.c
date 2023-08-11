@@ -6,20 +6,23 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 12:56:14 by analexan          #+#    #+#             */
-/*   Updated: 2023/08/11 11:17:55 by analexan         ###   ########.fr       */
+/*   Updated: 2023/08/11 18:54:37 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 #include <stdio.h>
 
+// this has TOO_MANY_LINES
 void	debugger(t_lst *a, t_lst *b, int *len)
 {
 	char	c[6];
-	t_lst	*tmp = a;
-	t_lst	*target;
-	int		pl = 1;
+	t_lst	*cheapest;
+	t_lst	*tmp;
+	int		pl;
 
+	tmp = a;
+	pl = 1;
 	pa_pb(&a, &b, 1);
 	pa_pb(&a, &b, 1);
 	while (*c != 'q')
@@ -30,27 +33,25 @@ void	debugger(t_lst *a, t_lst *b, int *len)
 			plv(a, b);
 		else
 			prt("a | %lb | %l> ", a, b);
-		// *c = 'f';
 		scanf("%5s", c);
 		if (*c == 'l')
 			pl = -pl;
 		else if (*c == 'f')
 		{
-			target = find_target(a, 2, b->data);
-			prt("tar[%i]: %i a:%i p:%i n:%i\n", target->index, target->data, 
-						target->above_median, target->push_price, target->node_price);
-			fill_node_price(a, b, 0);
-			fill_node_price(a, b, 1);
+			cheapest = fill_node_price(a, b);
+			prt("tar[%i]: %i a:%i p:%i n:%i\n", cheapest->index, cheapest->data,
+				cheapest->above_median, cheapest->push_price,
+				cheapest->node_price);
 			tmp = a;
 			if (tmp)
 			{
 				while (tmp->next)
 				{
-					prt("n[%i]: %i a:%i p:%i n:%i\n", tmp->index, tmp->data, 
+					prt("n[%i]: %i a:%i p:%i n:%i\n", tmp->index, tmp->data,
 						tmp->above_median, tmp->push_price, tmp->node_price);
 					tmp = tmp->next;
 				}
-				prt("n[%i]: %i a:%i p:%i n:%i\n> ", tmp->index, tmp->data, 
+				prt("n[%i]: %i a:%i p:%i n:%i\n> ", tmp->index, tmp->data,
 					tmp->above_median, tmp->push_price, tmp->node_price);
 			}
 			else
@@ -61,16 +62,15 @@ void	debugger(t_lst *a, t_lst *b, int *len)
 				prt("\n");
 				while (tmp->next)
 				{
-					prt("n[%i]: %i a:%i p:%i n:%i\n", tmp->index, tmp->data, 
+					prt("n[%i]: %i a:%i p:%i n:%i\n", tmp->index, tmp->data,
 						tmp->above_median, tmp->push_price, tmp->node_price);
 					tmp = tmp->next;
 				}
-				prt("n[%i]: %i a:%i p:%i n:%i\n> ", tmp->index, tmp->data, 
+				prt("n[%i]: %i a:%i p:%i n:%i\n> ", tmp->index, tmp->data,
 					tmp->above_median, tmp->push_price, tmp->node_price);
 			}
 			else
 				prt("(NULL)\n> ");
-			// *c = 'q';
 		}
 		else if (*c == 's' && c[1] == 'a')
 			sa_sb(&a, c[1]);
