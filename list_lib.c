@@ -6,7 +6,7 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 11:15:51 by analexan          #+#    #+#             */
-/*   Updated: 2023/08/11 18:54:49 by analexan         ###   ########.fr       */
+/*   Updated: 2023/08/14 19:35:36 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ t_lst	*fill_node_price(t_lst *a, t_lst *b)
 	t_lst	*target;
 	t_lst	*cheapest;
 
-	target = NULL;
 	if (!a || !b)
 		return (a);
 	cheapest = a;
@@ -76,19 +75,23 @@ t_lst	*fill_node_price(t_lst *a, t_lst *b)
 			target = find_target(b, 1, 0);
 		else
 			target = find_target(b, 3, a->data);
+		a->target = target;
 		a->node_price = a->push_price + target->push_price;
-		a = a->next;
-	}
-	a = cheapest;
-	while (a)
-	{
 		if (a->node_price < cheapest->node_price)
 			cheapest = a;
 		a = a->next;
 	}
 	return (cheapest);
 }
-
+/*
+100/1000
+612
+613
+// max 701
+500/200
+5479
+// max more than 5500
+*/
 // mode = 0: smallest; = 1: biggest; = 2: 1st between node_data
 // from smallest; = 3: 1st between node_data from biggest;
 // this has TOO_MANY_LINES
@@ -97,38 +100,36 @@ t_lst	*find_target(t_lst *lst, int mode, int node_data)
 	t_lst	*temp;
 
 	temp = lst;
-	fill_list(lst);
-	if (!mode)
+	if (!mode || mode == 1)
 	{
 		while (lst)
 		{
-			if (lst->data < temp->data)
+			if (!mode && lst->data < temp->data)
+				temp = lst;
+			else if (mode == 1 && lst->data > temp->data)
 				temp = lst;
 			lst = lst->next;
 		}
 	}
-	else if (mode == 1)
+	else if (mode == 2 || mode == 3)
 	{
-		while (lst)
+		if (mode == 2)
 		{
-			if (lst->data > temp->data)
-				temp = lst;
-			lst = lst->next;
+			if (lst->data > node_data && node_data > lstlast(lst, 0)->data)
+				return (lst);		
+			while (lst->next && !(lst->data < node_data 
+					&& node_data < lst->next->data))
+				lst = lst->next;
 		}
-	}
-	else if (mode == 2)
-	{
-		temp = lstlast(lst, 0);
-		while (lst->next && !(temp->data < node_data && node_data < lst->data))
-			lst = lst->next;
-		temp = lst;
-	}
-	else if (mode == 3)
-	{
-		while (lst->next && !(lst->data > node_data
-				&& node_data > lst->next->data))
-			lst = lst->next;
-		temp = lst;
+		else if (mode == 3)
+		{
+			if (lst->data < node_data && node_data < lstlast(lst, 0)->data)
+				return (lst);
+			while (lst->next && !(lst->data > node_data 
+					&& node_data > lst->next->data))
+				lst = lst->next;
+		}
+		temp = lst->next;
 	}
 	return (temp);
 }

@@ -6,7 +6,7 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 15:19:43 by analexan          #+#    #+#             */
-/*   Updated: 2023/08/11 18:46:26 by analexan         ###   ########.fr       */
+/*   Updated: 2023/08/14 18:58:59 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ typedef struct s_lst
 	int				index;
 	int				node_price;
 	int				push_price;
+	int				can_double_rotate;
+	struct s_lst	*target;
 	struct s_lst	*next;
 }					t_lst;
 

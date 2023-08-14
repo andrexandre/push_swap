@@ -6,23 +6,74 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 15:19:34 by analexan          #+#    #+#             */
-/*   Updated: 2023/08/11 19:00:03 by analexan         ###   ########.fr       */
+/*   Updated: 2023/08/14 19:38:19 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-/* make algorithms
-3= 3- perfect
-5= 12- perfect
-100= min=700 max=-1500 758 almost perfect
-500= min=5500 max=-11500 9368 almost perfect
+/* optimize algorithms
+3= 3- perfect 3
+5= 12- more than perfect 11
+100= min=700 more than perfect 666
+500= min=5500 almost perfect 5804
 */
-// debugger is an invalid comment and this has TOO_MANY_LINES
+void	sort_to_list(t_lst **a, t_lst **b, int mode)
+{
+	t_lst	*target;
+
+	if (is_smallest((*b)->data, *a) || is_biggest((*b)->data, *a))
+	{
+		if (!mode)
+		{
+			target = find_target(*a, 0, 0);
+			while (*a != target)
+				if (target->above_median)
+					ra_rb(a, 'a');
+			else
+				rra_rrb(a, 'a');
+			pa_pb(a, b, 0);
+		}
+		else
+		{
+			target = find_target(*a, 1, 0);
+			while (*a != target)
+				if (target->above_median)
+					ra_rb(a, 'b');
+			else
+				rra_rrb(a, 'b');
+		}
+	}
+	else
+	{
+		if (!mode)
+		{
+			target = find_target(*a, 2, (*b)->data);
+			while (*a != target)
+				if (target->above_median)
+						ra_rb(a, 'a');
+				else
+					rra_rrb(a, 'a');
+			pa_pb(a, b, 0);
+		}
+		else
+		{
+			target = find_target(*a, 3, (*b)->data);
+			while (*a != target)
+				if (target->above_median)
+						ra_rb(a, 'b');
+				else
+					rra_rrb(a, 'b');
+		}
+	}
+}
+/*
+*/
+
+// invalid comments and this has TOO_MANY_LINES
 void	push_swap(t_lst *a, t_lst *b, int len)
 {
 	t_lst	*target;
-	t_lst	*last;
 
 	target = NULL;
 	--len;
@@ -34,99 +85,26 @@ void	push_swap(t_lst *a, t_lst *b, int len)
 		sa_sb(&a, 'a');
 	else if (len == 3)
 		lilsort(&a);
-	else if (len == 4 || len == 5
-		// turn this into a function
-	)
+	else if (len == 4 || len == 5 /* turn this into a function */)
 	{
 		if (len == 5)
 			pa_pb(&a, &b, 1);
 		pa_pb(&a, &b, 1);
 		lilsort(&a);
 		if (len == 5)
-		{
-			if (is_smallest(b->data, a) || is_biggest(b->data, a))
-			{
-				target = find_target(a, 0, 0);
-				while (!is_smallest(a->data, a))
-					if (target->above_median)
-						ra_rb(&a, 'a');
-				else
-					rra_rrb(&a, 'a');
-			}
-			else
-			{
-				last = lstlast(a, 0);
-				target = find_target(a, 2, b->data);
-				if (target->above_median)
-				{
-					while (!(last->data < b->data && b->data < a->data))
-					{
-						ra_rb(&a, 'a');
-						last = lstlast(a, 0);
-					}
-				}
-				else
-				{
-					while (!(last->data < b->data && b->data < a->data))
-					{
-						rra_rrb(&a, 'a');
-						last = lstlast(a, 0);
-					}
-				}
-				if (a->data < b->data && b->data < a->next->data)
-					ra_rb(&a, 'a');
-			}
-			pa_pb(&a, &b, 0);
-		}
-		if (is_smallest(b->data, a) || is_biggest(b->data, a))
-		{
-			target = find_target(a, 0, 0);
-			while (!is_smallest(a->data, a))
-				if (target->above_median)
-					ra_rb(&a, 'a');
-			else
-				rra_rrb(&a, 'a');
-		}
-		else
-		{
-			last = lstlast(a, 0);
-			target = find_target(a, 2, b->data);
+			sort_to_list(&a, &b, 0);
+		sort_to_list(&a, &b, 0);
+		target = find_target(a, 0, 0);
+		while (!check_sort(a))
 			if (target->above_median)
-			{
-				while (!(last->data < b->data && b->data < a->data))
-				{
-					ra_rb(&a, 'a');
-					last = lstlast(a, 0);
-				}
-			}
-			else
-			{
-				while (!(last->data < b->data && b->data < a->data))
-				{
-					rra_rrb(&a, 'a');
-					last = lstlast(a, 0);
-				}
-			}
-			if (a->data < b->data && b->data < a->next->data)
 				ra_rb(&a, 'a');
-		}
-		pa_pb(&a, &b, 0);
-		if (!check_sort(a))
-		{
-			target = find_target(a, 0, 0);
-			while (!check_sort(a))
-				if (target->above_median)
-					ra_rb(&a, 'a');
-			else
-				rra_rrb(&a, 'a');
-		}
+		else
+			rra_rrb(&a, 'a');
 	}
-	else if (len > 5
-		// turn this into a function
-	)
+	else if (len > 5 /* turn this into a function */)
 	{
 		// to-do:
-		// optimize by doing rr if ra and rb is done and norm
+		// optimize by checking worst cases and norm
 		pa_pb(&a, &b, 1);
 		pa_pb(&a, &b, 1);
 		while (a)
@@ -135,50 +113,35 @@ void	push_swap(t_lst *a, t_lst *b, int len)
 					// target = cheapest
 					a, b);
 			while (a != target)
-				if (target->above_median)
-					ra_rb(&a, 'a');
-			else
-				rra_rrb(&a, 'a');
-			if (is_smallest(a->data, b) || is_biggest(a->data, b))
 			{
-				target = find_target(b, 1, 0);
-				while (!is_biggest(b->data, b))
+				if (target->above_median == target->target->above_median
+					&& target->push_price && target->target->push_price)
+				{
 					if (target->above_median)
-						ra_rb(&b, 'b');
-				else
-					rra_rrb(&b, 'b');
-			}
-			else
-			{
-				last = lstlast(b, 0);
-				target = find_target(b, 3, a->data);
-				if (target->above_median)
-				{
-					while (!(b->data < a->data && a->data < last->data))
-					{
-						ra_rb(&b, 'b');
-						last = lstlast(b, 0);
-					}
+						rr(&a, &b);
+					else
+						rrr(&a, &b);
 				}
 				else
 				{
-					while (!(b->data < a->data && a->data < last->data))
-					{
-						rra_rrb(&b, 'b');
-						last = lstlast(b, 0);
-					}
+					if (target->above_median)
+						ra_rb(&a, 'a');
+					else
+						rra_rrb(&a, 'a');
 				}
-				if (b->data > a->data && a->data > b->next->data)
-					ra_rb(&b, 'b');
 			}
+			sort_to_list(&b, &a, 1);
 			if (!a->next)
 				break ;
 			pa_pb(&a, &b, 1);
+			// if (lstlen(a) == 3)
+			// 	lilsort(&a);
+			// make the last optimization by doing lilsort when list is 3
 		}
 		while (b)
 			pa_pb(&a, &b, 0);
 		target = find_target(a, 0, 0);
-		while (!is_smallest(a->data, a))
+		while (!check_sort(a))
 			if (target->above_median)
 				ra_rb(&a, 'a');
 		else

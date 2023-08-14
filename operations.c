@@ -6,7 +6,7 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 17:04:41 by analexan          #+#    #+#             */
-/*   Updated: 2023/08/10 16:39:59 by analexan         ###   ########.fr       */
+/*   Updated: 2023/08/14 15:36:35 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ void	sa_sb(t_lst **fst_nd, char c)
 {
 	t_lst	*tmp;
 
-	if (c)
-		prt("s%c\n", c);
 	if (!*fst_nd || !(*fst_nd)->next)
 		return ;
+	if (c)
+		prt("s%c\n", c);
 	tmp = (*fst_nd)->next;
 	(*fst_nd)->next = (*fst_nd)->next->next;
 	tmp->next = *fst_nd;
@@ -39,9 +39,9 @@ void	pa_pb(t_lst **a, t_lst **b, int mode)
 {
 	t_lst	*tmp;
 
-	prt("p%c\n", "ab"[mode]);
 	if ((!*b && !mode) || (!*a && mode))
 		return ;
+	prt("p%c\n", "ab"[mode]);
 	if (mode)
 	{
 		tmp = *a;
@@ -64,10 +64,10 @@ void	ra_rb(t_lst **fst_nd, char c)
 {
 	t_lst	*tmp;
 
-	if (c)
-		prt("r%c\n", c);
 	if (!*fst_nd || !(*fst_nd)->next)
 		return ;
+	if (c)
+		prt("r%c\n", c);
 	tmp = (*fst_nd)->next;
 	lstlast(*fst_nd, 0)->next = *fst_nd;
 	(*fst_nd)->next = NULL;

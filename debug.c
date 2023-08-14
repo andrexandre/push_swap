@@ -6,7 +6,7 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 12:56:14 by analexan          #+#    #+#             */
-/*   Updated: 2023/08/11 18:54:37 by analexan         ###   ########.fr       */
+/*   Updated: 2023/08/14 18:05:56 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 void	debugger(t_lst *a, t_lst *b, int *len)
 {
 	char	c[6];
-	t_lst	*cheapest;
 	t_lst	*tmp;
 	int		pl;
 
@@ -38,10 +37,10 @@ void	debugger(t_lst *a, t_lst *b, int *len)
 			pl = -pl;
 		else if (*c == 'f')
 		{
-			cheapest = fill_node_price(a, b);
-			prt("tar[%i]: %i a:%i p:%i n:%i\n", cheapest->index, cheapest->data,
-				cheapest->above_median, cheapest->push_price,
-				cheapest->node_price);
+			tmp = fill_node_price(a, b);
+			prt("tar[%i]: %i a:%i p:%i n:%i\n", tmp->index, tmp->data,
+				tmp->above_median, tmp->push_price,
+				tmp->node_price);
 			tmp = a;
 			if (tmp)
 			{

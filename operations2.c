@@ -6,7 +6,7 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 17:04:41 by analexan          #+#    #+#             */
-/*   Updated: 2023/08/10 16:39:59 by analexan         ###   ########.fr       */
+/*   Updated: 2023/08/14 15:36:40 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ void	rra_rrb(t_lst **fst_nd, char c)
 {
 	t_lst	*last;
 
-	if (c)
-		prt("rr%c\n", c);
 	if (!*fst_nd || !(*fst_nd)->next)
 		return ;
+	if (c)
+		prt("rr%c\n", c);
 	last = lstlast(*fst_nd, 1);
 	last->next->next = *fst_nd;
 	*fst_nd = last->next;
