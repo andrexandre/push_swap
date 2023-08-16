@@ -6,7 +6,7 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 11:15:51 by analexan          #+#    #+#             */
-/*   Updated: 2023/08/14 19:35:36 by analexan         ###   ########.fr       */
+/*   Updated: 2023/08/16 15:34:21 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,34 @@ int	is_biggest(int node_data, t_lst *lst)
 			return (0);
 		lst = lst->next;
 	}
+	return (1);
+}
+
+int	lstlen(t_lst *lst)
+{
+	int	i;
+
+	i = 0;
+	if (!lst)
+		return (i);
+	while (lst)
+	{
+		i++;
+		lst = lst->next;
+	}
+	return (i);
+}
+
+int	lilsort(t_lst **lst)
+{
+	if ((*lst)->data > (*lst)->next->data 
+		&& (*lst)->data > (*lst)->next->next->data)
+		ra_rb(lst, 'a');
+	else if ((*lst)->data < (*lst)->next->data 
+		&& (*lst)->next->data > (*lst)->next->next->data)
+		rra_rrb(lst, 'a');
+	if ((*lst)->data > (*lst)->next->data)
+		sa_sb(lst, 'a');
 	return (1);
 }
 
@@ -60,79 +88,6 @@ void	fill_list(t_lst *lst)
 	}
 }
 
-// fill the node_price of a based on target b
-t_lst	*fill_node_price(t_lst *a, t_lst *b)
-{
-	t_lst	*target;
-	t_lst	*cheapest;
-
-	if (!a || !b)
-		return (a);
-	cheapest = a;
-	while (a)
-	{
-		if (is_smallest(a->data, b) || is_biggest(a->data, b))
-			target = find_target(b, 1, 0);
-		else
-			target = find_target(b, 3, a->data);
-		a->target = target;
-		a->node_price = a->push_price + target->push_price;
-		if (a->node_price < cheapest->node_price)
-			cheapest = a;
-		a = a->next;
-	}
-	return (cheapest);
-}
-/*
-100/1000
-612
-613
-// max 701
-500/200
-5479
-// max more than 5500
-*/
-// mode = 0: smallest; = 1: biggest; = 2: 1st between node_data
-// from smallest; = 3: 1st between node_data from biggest;
-// this has TOO_MANY_LINES
-t_lst	*find_target(t_lst *lst, int mode, int node_data)
-{
-	t_lst	*temp;
-
-	temp = lst;
-	if (!mode || mode == 1)
-	{
-		while (lst)
-		{
-			if (!mode && lst->data < temp->data)
-				temp = lst;
-			else if (mode == 1 && lst->data > temp->data)
-				temp = lst;
-			lst = lst->next;
-		}
-	}
-	else if (mode == 2 || mode == 3)
-	{
-		if (mode == 2)
-		{
-			if (lst->data > node_data && node_data > lstlast(lst, 0)->data)
-				return (lst);		
-			while (lst->next && !(lst->data < node_data 
-					&& node_data < lst->next->data))
-				lst = lst->next;
-		}
-		else if (mode == 3)
-		{
-			if (lst->data < node_data && node_data < lstlast(lst, 0)->data)
-				return (lst);
-			while (lst->next && !(lst->data > node_data 
-					&& node_data > lst->next->data))
-				lst = lst->next;
-		}
-		temp = lst->next;
-	}
-	return (temp);
-}
 /*
 int	main(void)
 {
@@ -140,8 +95,6 @@ int	main(void)
 	t_lst	*head;
 
 	head = NULL;
-	addfrt(&head, 123);
-	addfrt(&head, 1);
 	plh(head);
 	while (head)
 	{

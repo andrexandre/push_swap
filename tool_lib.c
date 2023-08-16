@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   func_lib.c                                         :+:      :+:    :+:   */
+/*   tool_lib.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 17:16:37 by analexan          #+#    #+#             */
-/*   Updated: 2023/08/04 13:04:04 by analexan         ###   ########.fr       */
+/*   Updated: 2023/08/16 16:27:03 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,43 +14,43 @@
 
 long	stol(char *str)
 {
-	long	n;
+	long	num;
 	int		mc;
 
 	mc = 1 - 2 * (*str == '-' && *str++);
-	n = 0;
+	num = 0;
 	while (*str)
-		n = n * 10 + *str++ - 48;
-	return (n * mc);
+		num = num * 10 + *str++ - 48;
+	return (num * mc);
 }
 
 int	stoi(char *str)
 {
-	int		n;
+	int		num;
 	int		mc;
 
 	mc = 1 - 2 * (*str == '-' && *str++);
-	n = 0;
+	num = 0;
 	while (*str)
-		n = n * 10 + *str++ - 48;
-	return (n * mc);
+		num = num * 10 + *str++ - 48;
+	return (num * mc);
 }
 
-void	pn(int n)
+void	pn(int num)
 {
-	if (n < 0)
+	if (num < 0)
 	{
 		write(1, "-", 1);
-		if (n == -2147483648)
+		if (num == -2147483648)
 		{
 			write(1, "2", 1);
-			n = -147483648;
+			num = -147483648;
 		}
-		n = -n;
+		num = -num;
 	}
-	if (n > 9)
-		pn(n / 10);
-	write(1, &"0123456789"[n % 10], 1);
+	if (num > 9)
+		pn(num / 10);
+	write(1, &"0123456789"[num % 10], 1);
 }
 
 void	ps(char *str)
@@ -77,8 +77,6 @@ void	prt(char *string, ...)
 				ps(va_arg(args, char *));
 			else if (string[i] == 'c')
 				write(1, &"abcdefghijklmnopqrstu"[(va_arg(args, int)) - 97], 1);
-			else if (string[i] == 'l')
-				plh(va_arg(args, t_lst *));
 			i++;
 		}
 		else

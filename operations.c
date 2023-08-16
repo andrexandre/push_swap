@@ -6,32 +6,32 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 17:04:41 by analexan          #+#    #+#             */
-/*   Updated: 2023/08/14 15:36:35 by analexan         ###   ########.fr       */
+/*   Updated: 2023/08/16 15:30:36 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	sa_sb(t_lst **fst_nd, char c)
+void	sa_sb(t_lst **head, char c)
 {
 	t_lst	*tmp;
 
-	if (!*fst_nd || !(*fst_nd)->next)
+	if (!*head || !(*head)->next)
 		return ;
 	if (c)
 		prt("s%c\n", c);
-	tmp = (*fst_nd)->next;
-	(*fst_nd)->next = (*fst_nd)->next->next;
-	tmp->next = *fst_nd;
-	*fst_nd = tmp;
-	fill_list(*fst_nd);
+	tmp = (*head)->next;
+	(*head)->next = (*head)->next->next;
+	tmp->next = *head;
+	*head = tmp;
+	fill_list(*head);
 }
 
 void	ss(t_lst **a, t_lst **b)
 {
 	sa_sb(a, '\0');
 	sa_sb(b, '\0');
-	ps("ss\n");
+	prt("ss\n");
 }
 
 // mode = 0: pa, mode = 1: pb
@@ -60,24 +60,24 @@ void	pa_pb(t_lst **a, t_lst **b, int mode)
 	fill_list(*b);
 }
 
-void	ra_rb(t_lst **fst_nd, char c)
+void	ra_rb(t_lst **head, char c)
 {
 	t_lst	*tmp;
 
-	if (!*fst_nd || !(*fst_nd)->next)
+	if (!*head || !(*head)->next)
 		return ;
 	if (c)
 		prt("r%c\n", c);
-	tmp = (*fst_nd)->next;
-	lstlast(*fst_nd, 0)->next = *fst_nd;
-	(*fst_nd)->next = NULL;
-	*fst_nd = tmp;
-	fill_list(*fst_nd);
+	tmp = (*head)->next;
+	lstlast(*head, 0)->next = *head;
+	(*head)->next = NULL;
+	*head = tmp;
+	fill_list(*head);
 }
 
 void	rr(t_lst **a, t_lst **b)
 {
 	ra_rb(a, '\0');
 	ra_rb(b, '\0');
-	ps("rr\n");
+	prt("rr\n");
 }

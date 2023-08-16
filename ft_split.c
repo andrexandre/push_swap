@@ -6,7 +6,7 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 10:30:11 by analexan          #+#    #+#             */
-/*   Updated: 2023/08/10 15:26:29 by analexan         ###   ########.fr       */
+/*   Updated: 2023/08/16 16:25:56 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ char	**ft_split_m(char const *s, char c, int *wc)
 	return (strs);
 }
 
+// free's all the nodes in the list
 void	free_all(t_lst *a, t_lst *b)
 {
 	t_lst	*tmp;

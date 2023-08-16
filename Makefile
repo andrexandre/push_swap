@@ -49,6 +49,7 @@ bonus:		all
 clean:
 			@ ${RM} *.o */*.o */*/*.o
 			@ echo "$(RED)Deleting $(CYAN)$(NAME) $(CLR_RMV)objs $(GREEN)✔️"
+			@ rm -rf objs
 
 fclean:		clean
 			@ ${RM} ${NAME}
@@ -62,7 +63,6 @@ m:	${NAME}
 	@ ./${NAME} ${M}
 
 args := "--1" "1 2 3a" "1 2 1" "" "1" "3 4 2 5 1" "2 1 3 6 5 8"
-# "2 1 3 6 5 8 23 34 45 67 0 26 48 70"
 
 run: ${NAME}
 	@for arg in $(args); do \

@@ -6,32 +6,32 @@
 /*   By: analexan <analexan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 17:04:41 by analexan          #+#    #+#             */
-/*   Updated: 2023/08/14 15:36:40 by analexan         ###   ########.fr       */
+/*   Updated: 2023/08/16 15:30:29 by analexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	rra_rrb(t_lst **fst_nd, char c)
+void	rra_rrb(t_lst **head, char c)
 {
 	t_lst	*last;
 
-	if (!*fst_nd || !(*fst_nd)->next)
+	if (!*head || !(*head)->next)
 		return ;
 	if (c)
 		prt("rr%c\n", c);
-	last = lstlast(*fst_nd, 1);
-	last->next->next = *fst_nd;
-	*fst_nd = last->next;
+	last = lstlast(*head, 1);
+	last->next->next = *head;
+	*head = last->next;
 	last->next = NULL;
-	fill_list(*fst_nd);
+	fill_list(*head);
 }
 
 void	rrr(t_lst **a, t_lst **b)
 {
 	rra_rrb(a, '\0');
 	rra_rrb(b, '\0');
-	ps("rrr\n");
+	prt("rrr\n");
 }
 
 // mode = 0: last one, mode = 1: one before last
@@ -65,7 +65,7 @@ void	addbck(t_lst **head, int n)
 		temp->next = node;
 }
 
-int	check_sort(t_lst *lst)
+int	is_sorted(t_lst *lst)
 {
 	if (!lst)
 		return (1);
